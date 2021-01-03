@@ -16,9 +16,6 @@ for node, def in pairs(minetest.registered_nodes) do
 	   not def.allow_metadata_inventory_take and
 	   not (def.groups.not_in_creative_inventory == 1) and
 	   not (def.groups.not_cuttable == 1) and
-	   not def.groups.wool and
-	   (def.tiles and type(def.tiles[1]) == "string" and not
-		def.tiles[1]:find("mineral")) and
 	   not def.mesecons and
 	   def.description and
 	   def.description ~= "" and
@@ -68,15 +65,6 @@ workbench.defs = {
 			    { 0, 8,  0, 8,  8, 8  }}
 }
 
--- Tools allowed to be repaired
-function workbench:repairable(stack)
-	local tools = {"pick", "axe", "shovel", "sword", "hoe", "armor", "shield"}
-	for _, t in pairs(tools) do
-		if stack:find(t) then return true end
-	end
-	return false
-end
-
 function workbench:get_output(inv, input, name)
 	local output = {}
 	for _, n in pairs(self.defs) do
@@ -107,80 +95,46 @@ end
 
 local formspecs = {
 	-- Main formspec
-	  mcl_formspec.get_itemslot_bg(2,1,1,1)..
+	"label[0,0;Circular Saw]"..
+	  mcl_formspec.get_itemslot_bg(1.5,1,1,1)..
       mcl_formspec.get_itemslot_bg(4,0,4,3)..
-	  [[image[3,1;1,1;gui_furnace_arrow_bg.png^[transformR270]
-	   image[1,1;1,1;workbench_saw.png]
-	   list[context;input;2,1;1,1;]
+	  [[image[2.7,1;1,1;gui_furnace_arrow_bg.png^[transformR270]
+	   image[0.5,1;1,1;workbench_saw.png]
+	   list[context;input;1.5,1;1,1;]
 	   list[context;forms;4,0;4,3;] ]],
 }
 
 function workbench:set_formspec(meta, id)
-	meta:set_string("formspec", "size[8,7;]list[current_player;main;0,3.25;8,4;]"..
-			formspecs[id]..mcl_formspec.get_itemslot_bg(0,3.25,8,4))
+	meta:set_string("formspec", "size[9,7;]list[current_player;main;0,3.25;9,4;]"..
+			formspecs[id]..mcl_formspec.get_itemslot_bg(0,3.25,9,4))
 end
 
 function workbench.construct(pos)
 	local meta = minetest.get_meta(pos)
 	local inv = meta:get_inventory()
 
-	inv:set_size("tool", 1)
 	inv:set_size("input", 1)
-	inv:set_size("hammer", 1)
 	inv:set_size("forms", 4*3)
-	inv:set_size("storage", 8*2)
 
-	meta:set_string("infotext", "Work Bench")
+	meta:set_string("infotext", "Circular Saw")
 	workbench:set_formspec(meta, 1)
 end
 
 function workbench.fields(pos, _, fields)
 	local meta = minetest.get_meta(pos)
-	if     fields.back    then workbench:set_formspec(meta, 1)
-	elseif fields.craft   then workbench:set_formspec(meta, 2)
-	elseif fields.storage then workbench:set_formspec(meta, 3) end
 end
 
 function workbench.dig(pos)
 	local inv = minetest.get_meta(pos):get_inventory()
-	return inv:is_empty("input") and inv:is_empty("hammer") and
-	       inv:is_empty("tool") and inv:is_empty("storage")
-end
-
-function workbench.timer(pos)
-	local timer = minetest.get_node_timer(pos)
-	local inv = minetest.get_meta(pos):get_inventory()
-	local tool = inv:get_stack("tool", 1)
-	local hammer = inv:get_stack("hammer", 1)
-
-	if tool:is_empty() or hammer:is_empty() or tool:get_wear() == 0 then
-		timer:stop()
-		return
-	end
-
-	-- Tool's wearing range: 0-65535 | 0 = new condition
-	tool:add_wear(-500)
-	hammer:add_wear(700)
-
-	inv:set_stack("tool", 1, tool)
-	inv:set_stack("hammer", 1, hammer)
-	return true
+	return inv:is_empty("input")
 end
 
 function workbench.put(_, listname, _, stack)
 	local stackname = stack:get_name()
-	if (listname == "tool" and stack:get_wear() > 0 and
-	    workbench:repairable(stackname)) or
-	   (listname == "input" and minetest.registered_nodes[stackname.."_cube"]) or
-	   (listname == "hammer" and stackname == "xdecor:hammer") or
-	    listname == "storage" then
+	if(listname == "input" and minetest.registered_nodes[stackname.."_cube"]) then
 		return stack:get_count()
 	end
 	return 0
-end
-
-function workbench.move(_, from_list, _, to_list, _, count)
-	return (to_list == "storage" and from_list ~= "forms") and count or 0
 end
 
 function workbench.on_put(pos, listname, _, stack)
@@ -188,10 +142,7 @@ function workbench.on_put(pos, listname, _, stack)
 	if listname == "input" then
 		local input = inv:get_stack("input", 1)
 		workbench:get_output(inv, input, stack:get_name())
-	elseif listname == "tool" or listname == "hammer" then
-		local timer = minetest.get_node_timer(pos)
-		timer:start(3.0)
-	end
+end
 end
 
 function workbench.on_take(pos, listname, index, stack, player)
@@ -302,9 +253,8 @@ for i=1, #nodes do
 			sounds = def.sounds,
 			tiles = tiles,
 			groups = groups,
-			_mcl_blast_resistance = 0.3,
-	        _mcl_hardness = 0.3,
-			
+			_mcl_blast_resistance = 2,
+	        _mcl_hardness = 2,
 			-- `unpack` has been changed to `table.unpack` in newest Lua versions.
 			node_box = workbench:pixelbox(16, {unpack(d, 3)}),
 			sunlight_propagates = true,
@@ -313,4 +263,411 @@ for i=1, #nodes do
 	end
 end
 end
+
+local colour = {
+--     Node          dye       Description    Glass Colour
+	{"white",      "white",      "White",      "white"},
+	{"silver",     "grey",       "Silver",     "silver"},
+	{"grey",       "dark_grey",  "Grey",       "gray"},
+	{"black",      "black",      "Black",      "black"},
+	{"purple",     "violet",     "Purple",     "purple"},
+	{"blue",       "blue",       "Blue",       "blue"},
+	{"cyan",       "cyan",       "Cyan",       "cyan"},
+	{"green",      "dark_green", "Green",      "green"},
+	{"lime",       "green",      "Lime",       "lime"},
+	{"yellow",     "yellow",     "Yellow",     "yellow"},
+	{"brown",      "brown",      "Brown",      "brown"},
+	{"orange",     "orange",     "Orange",     "orange"},
+	{"red",        "red",        "Red",        "red"},
+	{"magenta",    "magenta",    "Magenta",    "magenta"},
+	{"pink",       "pink",       "Pink",       "pink"},
+    {"light_blue", "lightblue",  "Light Blue", "light_blue"},
+}
+
+for _, colour in pairs(colour) do
+
+minetest.override_item("mcl_core:glass_" .. colour[4] .. "_stair", {
+	description = colour[3] .. (" Stair"),
+	use_texture_alpha = true,
+	drawtype = "nodebox",
+	is_ground_content = false,
+	tiles = {"coloured_glass_" .. colour[1] .. ".png"},
+	paramtype = "light",
+	sunlight_propagates = true,
+	stack_max = 64,
+	groups = {handy=1, glass=1, building_block=1, material_glass=1},
+	sounds = mcl_sounds.node_sound_glass_defaults(),
+	drop = "mcl_core:glass_" .. colour[4] .. "_stair",
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
+})
+
+minetest.override_item("mcl_core:glass_" .. colour[4] .. "_microslab", {
+	description = colour[3] .. (" Micro Slab"),
+	use_texture_alpha = true,
+	drawtype = "nodebox",
+	is_ground_content = false,
+	tiles = {"coloured_glass_" .. colour[1] .. ".png"},
+	paramtype = "light",
+	sunlight_propagates = true,
+	stack_max = 64,
+	groups = {handy=1, glass=1, building_block=1, material_glass=1},
+	sounds = mcl_sounds.node_sound_glass_defaults(),
+	drop = "mcl_core:glass_" .. colour[4] .. "_microslab",
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
+})
+
+minetest.override_item("mcl_core:glass_" .. colour[4] .. "_nanoslab", {
+	description = colour[3] .. (" Nano Slab"),
+	use_texture_alpha = true,
+	drawtype = "nodebox",
+	is_ground_content = false,
+	tiles = {"coloured_glass_" .. colour[1] .. ".png"},
+	paramtype = "light",
+	sunlight_propagates = true,
+	stack_max = 64,
+	groups = {handy=1, glass=1, building_block=1, material_glass=1},
+	sounds = mcl_sounds.node_sound_glass_defaults(),
+	drop = "mcl_core:glass_" .. colour[4] .. "_nanoslab",
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
+})
+
+minetest.override_item("mcl_core:glass_" .. colour[4] .. "_micropanel", {
+	description = colour[3] .. (" Micro Panel"),
+	use_texture_alpha = true,
+	drawtype = "nodebox",
+	is_ground_content = false,
+	tiles = {"coloured_glass_" .. colour[1] .. ".png"},
+	paramtype = "light",
+	sunlight_propagates = true,
+	stack_max = 64,
+	groups = {handy=1, glass=1, building_block=1, material_glass=1},
+	sounds = mcl_sounds.node_sound_glass_defaults(),
+	drop = "mcl_core:glass_" .. colour[4] .. "_micropanel",
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
+})
+
+minetest.override_item("mcl_core:glass_" .. colour[4] .. "_thinstair", {
+	description = colour[3] .. (" Thin Stair"),
+	use_texture_alpha = true,
+	drawtype = "nodebox",
+	is_ground_content = false,
+	tiles = {"coloured_glass_" .. colour[1] .. ".png"},
+	paramtype = "light",
+	sunlight_propagates = true,
+	stack_max = 64,
+	groups = {handy=1, glass=1, building_block=1, material_glass=1},
+	sounds = mcl_sounds.node_sound_glass_defaults(),
+	drop = "mcl_core:glass_" .. colour[4] .. "_thinstair",
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
+})
+
+minetest.override_item("mcl_core:glass_" .. colour[4] .. "_cube", {
+	description = colour[3] .. (" Cube"),
+	use_texture_alpha = true,
+	drawtype = "nodebox",
+	is_ground_content = false,
+	tiles = {"coloured_glass_" .. colour[1] .. ".png"},
+	paramtype = "light",
+	sunlight_propagates = true,
+	stack_max = 64,
+	groups = {handy=1, glass=1, building_block=1, material_glass=1},
+	sounds = mcl_sounds.node_sound_glass_defaults(),
+	drop = "mcl_core:glass_" .. colour[4] .. "_cube",
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
+})
+
+minetest.override_item("mcl_core:glass_" .. colour[4] .. "_panel", {
+	description = colour[3] .. (" Panel"),
+	use_texture_alpha = true,
+	drawtype = "nodebox",
+	is_ground_content = false,
+	tiles = {"coloured_glass_" .. colour[1] .. ".png"},
+	paramtype = "light",
+	sunlight_propagates = true,
+	stack_max = 64,
+	groups = {handy=1, glass=1, building_block=1, material_glass=1},
+	sounds = mcl_sounds.node_sound_glass_defaults(),
+	drop = "mcl_core:glass_" .. colour[4] .. "_panel",
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
+})
+
+minetest.override_item("mcl_core:glass_" .. colour[4] .. "_slab", {
+	description = colour[3] .. (" Slab"),
+	use_texture_alpha = true,
+	drawtype = "nodebox",
+	is_ground_content = false,
+	tiles = {"coloured_glass_" .. colour[1] .. ".png"},
+	paramtype = "light",
+	sunlight_propagates = true,
+	stack_max = 64,
+	groups = {handy=1, glass=1, building_block=1, material_glass=1},
+	sounds = mcl_sounds.node_sound_glass_defaults(),
+	drop = "mcl_core:glass_" .. colour[4] .. "_slab",
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
+})
+
+minetest.override_item("mcl_core:glass_" .. colour[4] .. "_doublepanel", {
+	description = colour[3] .. (" Double Panel"),
+	use_texture_alpha = true,
+	drawtype = "nodebox",
+	is_ground_content = false,
+	tiles = {"coloured_glass_" .. colour[1] .. ".png"},
+	paramtype = "light",
+	sunlight_propagates = true,
+	stack_max = 64,
+	groups = {handy=1, glass=1, building_block=1, material_glass=1},
+	sounds = mcl_sounds.node_sound_glass_defaults(),
+	drop = "mcl_core:glass_" .. colour[4] .. "_doublepanel",
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
+})
+
+minetest.override_item("mcl_core:glass_" .. colour[4] .. "_halfstair", {
+	description = colour[3] .. (" Half Stair"),
+	use_texture_alpha = true,
+	drawtype = "nodebox",
+	is_ground_content = false,
+	tiles = {"coloured_glass_" .. colour[1] .. ".png"},
+	paramtype = "light",
+	sunlight_propagates = true,
+	stack_max = 64,
+	groups = {handy=1, glass=1, building_block=1, material_glass=1},
+	sounds = mcl_sounds.node_sound_glass_defaults(),
+	drop = "mcl_core:glass_" .. colour[4] .. "_halfstair",
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
+})
+
+minetest.override_item("mcl_core:glass_" .. colour[4] .. "_outerstair", {
+	description = colour[3] .. (" Outer Stair"),
+	use_texture_alpha = true,
+	drawtype = "nodebox",
+	is_ground_content = false,
+	tiles = {"coloured_glass_" .. colour[1] .. ".png"},
+	paramtype = "light",
+	sunlight_propagates = true,
+	stack_max = 64,
+	groups = {handy=1, glass=1, building_block=1, material_glass=1},
+	sounds = mcl_sounds.node_sound_glass_defaults(),
+	drop = "mcl_core:glass_" .. colour[4] .. "_outerstair",
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
+})
+
+minetest.override_item("mcl_core:glass_" .. colour[4] .. "_innerstair", {
+	description = colour[3] .. (" Inner Stair"),
+	use_texture_alpha = true,
+	drawtype = "nodebox",
+	is_ground_content = false,
+	tiles = {"coloured_glass_" .. colour[1] .. ".png"},
+	paramtype = "light",
+	sunlight_propagates = true,
+	stack_max = 64,
+	groups = {handy=1, glass=1, building_block=1, material_glass=1},
+	sounds = mcl_sounds.node_sound_glass_defaults(),
+	drop = "mcl_core:glass_" .. colour[4] .. "_innerstair",
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
+})
+end
+
+minetest.override_item("mcl_core:glass_stair", {
+	description = ("Stair"),
+	use_texture_alpha = true,
+	drawtype = "nodebox",
+	is_ground_content = false,
+	tiles = {"coloured_glass_clear_framed.png"},
+	paramtype = "light",
+	sunlight_propagates = true,
+	stack_max = 64,
+	groups = {handy=1, glass=1, building_block=1, material_glass=1},
+	sounds = mcl_sounds.node_sound_glass_defaults(),
+	drop = "mcl_core:glass_stair",
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
+})
+
+minetest.override_item("mcl_core:glass_microslab", {
+	description = ("Micro Slab"),
+	use_texture_alpha = true,
+	drawtype = "nodebox",
+	is_ground_content = false,
+	tiles = {"coloured_glass_clear_framed.png"},
+	paramtype = "light",
+	sunlight_propagates = true,
+	stack_max = 64,
+	groups = {handy=1, glass=1, building_block=1, material_glass=1},
+	sounds = mcl_sounds.node_sound_glass_defaults(),
+	drop = "mcl_core:glass_microslab",
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
+})
+
+minetest.override_item("mcl_core:glass_nanoslab", {
+	description = ("Nano Slab"),
+	use_texture_alpha = true,
+	drawtype = "nodebox",
+	is_ground_content = false,
+	tiles = {"coloured_glass_clear_framed.png"},
+	paramtype = "light",
+	sunlight_propagates = true,
+	stack_max = 64,
+	groups = {handy=1, glass=1, building_block=1, material_glass=1},
+	sounds = mcl_sounds.node_sound_glass_defaults(),
+	drop = "mcl_core:glass_nanoslab",
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
+})
+
+minetest.override_item("mcl_core:glass_micropanel", {
+	description = ("Micro Panel"),
+	use_texture_alpha = true,
+	drawtype = "nodebox",
+	is_ground_content = false,
+	tiles = {"coloured_glass_clear_framed.png"},
+	paramtype = "light",
+	sunlight_propagates = true,
+	stack_max = 64,
+	groups = {handy=1, glass=1, building_block=1, material_glass=1},
+	sounds = mcl_sounds.node_sound_glass_defaults(),
+	drop = "mcl_core:glass_micropanel",
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
+})
+
+minetest.override_item("mcl_core:glass_thinstair", {
+	description = ("Thin Stair"),
+	use_texture_alpha = true,
+	drawtype = "nodebox",
+	is_ground_content = false,
+	tiles = {"coloured_glass_clear_framed.png"},
+	paramtype = "light",
+	sunlight_propagates = true,
+	stack_max = 64,
+	groups = {handy=1, glass=1, building_block=1, material_glass=1},
+	sounds = mcl_sounds.node_sound_glass_defaults(),
+	drop = "mcl_core:glass_thinstair",
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
+})
+
+minetest.override_item("mcl_core:glass_cube", {
+	description = ("Cube"),
+	use_texture_alpha = true,
+	drawtype = "nodebox",
+	is_ground_content = false,
+	tiles = {"coloured_glass_clear_framed.png"},
+	paramtype = "light",
+	sunlight_propagates = true,
+	stack_max = 64,
+	groups = {handy=1, glass=1, building_block=1, material_glass=1},
+	sounds = mcl_sounds.node_sound_glass_defaults(),
+	drop = "mcl_core:glass_cube",
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
+})
+
+minetest.override_item("mcl_core:glass_panel", {
+	description = ("Panel"),
+	use_texture_alpha = true,
+	drawtype = "nodebox",
+	is_ground_content = false,
+	tiles = {"coloured_glass_clear_framed.png"},
+	paramtype = "light",
+	sunlight_propagates = true,
+	stack_max = 64,
+	groups = {handy=1, glass=1, building_block=1, material_glass=1},
+	sounds = mcl_sounds.node_sound_glass_defaults(),
+	drop = "mcl_core:glass_panel",
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
+})
+
+minetest.override_item("mcl_core:glass_slab", {
+	description = ("Slab"),
+	use_texture_alpha = true,
+	drawtype = "nodebox",
+	is_ground_content = false,
+	tiles = {"coloured_glass_clear_framed.png"},
+	paramtype = "light",
+	sunlight_propagates = true,
+	stack_max = 64,
+	groups = {handy=1, glass=1, building_block=1, material_glass=1},
+	sounds = mcl_sounds.node_sound_glass_defaults(),
+	drop = "mcl_core:glass_slab",
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
+})
+
+minetest.override_item("mcl_core:glass_doublepanel", {
+	description = ("Double Panel"),
+	use_texture_alpha = true,
+	drawtype = "nodebox",
+	is_ground_content = false,
+	tiles = {"coloured_glass_clear_framed.png"},
+	paramtype = "light",
+	sunlight_propagates = true,
+	stack_max = 64,
+	groups = {handy=1, glass=1, building_block=1, material_glass=1},
+	sounds = mcl_sounds.node_sound_glass_defaults(),
+	drop = "mcl_core:glass_doublepanel",
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
+})
+
+minetest.override_item("mcl_core:glass_halfstair", {
+	description = ("Half Stair"),
+	use_texture_alpha = true,
+	drawtype = "nodebox",
+	is_ground_content = false,
+	tiles = {"coloured_glass_clear_framed.png"},
+	paramtype = "light",
+	sunlight_propagates = true,
+	stack_max = 64,
+	groups = {handy=1, glass=1, building_block=1, material_glass=1},
+	sounds = mcl_sounds.node_sound_glass_defaults(),
+	drop = "mcl_core:glass_halfstair",
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
+})
+
+minetest.override_item("mcl_core:glass_outerstair", {
+	description = ("Outer Stair"),
+	use_texture_alpha = true,
+	drawtype = "nodebox",
+	is_ground_content = false,
+	tiles = {"coloured_glass_clear_framed.png"},
+	paramtype = "light",
+	sunlight_propagates = true,
+	stack_max = 64,
+	groups = {handy=1, glass=1, building_block=1, material_glass=1},
+	sounds = mcl_sounds.node_sound_glass_defaults(),
+	drop = "mcl_core:glass_outerstair",
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
+})
+
+minetest.override_item("mcl_core:glass_innerstair", {
+	description = ("Inner Stair"),
+	use_texture_alpha = true,
+	drawtype = "nodebox",
+	is_ground_content = false,
+	tiles = {"coloured_glass_clear_framed.png"},
+	paramtype = "light",
+	sunlight_propagates = true,
+	stack_max = 64,
+	groups = {handy=1, glass=1, building_block=1, material_glass=1},
+	sounds = mcl_sounds.node_sound_glass_defaults(),
+	drop = "mcl_core:glass_innerstair",
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
+})
 
