@@ -106,8 +106,13 @@ local formspecs = {
 }
 
 function workbench:set_formspec(meta, id)
-	meta:set_string("formspec", "size[9,7;]list[current_player;main;0,3.25;9,4;]"..
-			formspecs[id]..mcl_formspec.get_itemslot_bg(0,3.25,9,4))
+	meta:set_string("formspec", "size[9,7;]"..
+	         "list[current_player;main;0,3.25;9,3;9]"..
+	         "list[current_player;main;0,6.25;9,1;]"..
+			formspecs[id]..mcl_formspec.get_itemslot_bg(0,3.25,9,4)..
+			"listring[current_player;main]"..
+			"listring[context;input]"
+			)
 end
 
 function workbench.construct(pos)
@@ -301,7 +306,8 @@ minetest.register_node(":mcl_colorblocks:concrete_".. colour[1] .. "_"..d[1], {
 			sunlight_propagates = true,
 			on_place = minetest.rotate_node
 		})
-	end
+		
+end
 end
 end
 end
@@ -519,7 +525,6 @@ minetest.override_item("mcl_core:glass_" .. colour[4] .. "_innerstair", {
 	_mcl_blast_resistance = 0.3,
 	_mcl_hardness = 0.3,
 })
-end
 
 minetest.override_item("mcl_core:glass_stair", {
 	description = ("Stair"),
@@ -712,4 +717,4 @@ minetest.override_item("mcl_core:glass_innerstair", {
 	_mcl_blast_resistance = 0.3,
 	_mcl_hardness = 0.3,
 })
-
+end
