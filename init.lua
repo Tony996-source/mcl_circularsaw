@@ -27,7 +27,7 @@ end
 
 -- Optionally, you can register custom cuttable nodes in the workbench
 WB.custom_nodes_register = {
-	-- "default:leaves",
+
 }
 
 setmetatable(nodes, {
@@ -70,6 +70,7 @@ function workbench:get_output(inv, input, name)
 	for _, n in pairs(self.defs) do
 		local count = min(n[2] * input:get_count(), input:get_stack_max())
 		local item = name.."_"..n[1]
+		if not n[3] then item = "stairs:"..n[1].."_"..name:match(":(.*)") end
 		output[#output+1] = item.." "..count
 	end
 	inv:set_list("forms", output)
@@ -247,6 +248,7 @@ for i=1, #nodes do
 		minetest.register_node(":"..node.."_"..d[1], {
 			description = def.description.." "..d[1]:gsub("^%l", string.upper),
 			use_texture_alpha = true,
+			stack_max = 64,
 			paramtype = "light",
 			paramtype2 = "facedir",
 			drawtype = "nodebox",
@@ -260,7 +262,47 @@ for i=1, #nodes do
 			sunlight_propagates = true,
 			on_place = minetest.rotate_node
 		})
+		
+local colour = {
+--     Node          dye       Description    Glass Colour
+	{"white",      "white",      "White",      "white"},
+	{"silver",     "grey",       "Silver",     "silver"},
+	{"grey",       "dark_grey",  "Grey",       "gray"},
+	{"black",      "black",      "Black",      "black"},
+	{"purple",     "violet",     "Purple",     "purple"},
+	{"blue",       "blue",       "Blue",       "blue"},
+	{"cyan",       "cyan",       "Cyan",       "cyan"},
+	{"green",      "dark_green", "Green",      "green"},
+	{"lime",       "green",      "Lime",       "lime"},
+	{"yellow",     "yellow",     "Yellow",     "yellow"},
+	{"brown",      "brown",      "Brown",      "brown"},
+	{"orange",     "orange",     "Orange",     "orange"},
+	{"red",        "red",        "Red",        "red"},
+	{"magenta",    "magenta",    "Magenta",    "magenta"},
+	{"pink",       "pink",       "Pink",       "pink"},
+    {"light_blue", "lightblue",  "Light Blue", "light_blue"},
+}
+
+for _, colour in pairs(colour) do
+		
+minetest.register_node(":mcl_colorblocks:concrete_".. colour[1] .. "_"..d[1], {
+			description = colour[3] .. (" Concrete"),
+			stack_max = 64,
+			paramtype = "light",
+			paramtype2 = "facedir",
+			drawtype = "nodebox",
+			sounds = mcl_sounds.node_sound_stone_defaults(),
+			tiles = {"mcl_colorblocks_concrete_" .. colour[1] .. ".png"},
+			groups = {handy=1,pickaxey=1, concrete=1,building_block=1, material_stone=1},
+			_mcl_blast_resistance = 1.8,
+		    _mcl_hardness = 1.8,
+			-- `unpack` has been changed to `table.unpack` in newest Lua versions.
+			node_box = workbench:pixelbox(16, {unpack(d, 3)}),
+			sunlight_propagates = true,
+			on_place = minetest.rotate_node
+		})
 	end
+end
 end
 end
 
