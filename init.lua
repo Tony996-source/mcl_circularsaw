@@ -51,15 +51,14 @@ workbench.defs = {
 			    { 0, 15, 8, 16, 1, 8  }},
 	{"cube", 	4,  { 0, 0,  0, 8,  8, 8  }},
 	{"panel",	4,  { 0, 0,  0, 16, 8, 8  }},
-	{"slab", 	2,  {0, 0, 0, 16, 8, 16}},
+	{"slab", 	2,  nil			  },
 	{"doublepanel", 2,  { 0, 0,  0, 16, 8, 8  },
 			    { 0, 8,  8, 16, 8, 8  }},
 	{"halfstair",	2,  { 0, 0,  0, 8,  8, 16 },
 			    { 0, 8,  8, 8,  8, 8  }},
 	{"outerstair",	1,  { 0, 0,  0, 16, 8, 16 },
 			    { 0, 8,  8, 8,  8, 8  }},
-	{"stair",	1,  {0, 0, 0, 16, 8, 16},
-					{0, 8, 8, 16, 8, 8}},
+	{"stair",	1,  nil			  },
 	{"innerstair",	1,  { 0, 0,  0, 16, 8, 16 },
 			    { 0, 8,  8, 16, 8, 8  },
 			    { 0, 8,  0, 8,  8, 8  }}
@@ -70,7 +69,7 @@ function workbench:get_output(inv, input, name)
 	for _, n in pairs(self.defs) do
 		local count = min(n[2] * input:get_count(), input:get_stack_max())
 		local item = name.."_"..n[1]
-		if not n[3] then item = "stairs:"..n[1].."_"..name:match(":(.*)") end
+		if not n[3] then item = "mcl_stairs:"..n[1].."_"..name:match(":(.*)") end
 		output[#output+1] = item.." "..count
 	end
 	inv:set_list("forms", output)
@@ -249,6 +248,11 @@ for i=1, #nodes do
 		else
 			tiles = {def.tile_images[1]}
 		end
+		
+		if not minetest.registered_nodes["mcl_stairs:slab_"..node:match(":(.*)")] then
+			mcl_stairs.register_stair_and_slab_simple(node:match(":(.*)"), node,
+	def.description.." Stair", def.description.." Slab", "Double "..def.description.." Slab")
+		end
 
 		minetest.register_node(":"..node.."_"..d[1], {
 			description = def.description.." "..d[1]:gsub("^%l", string.upper),
@@ -259,6 +263,24 @@ for i=1, #nodes do
 			drawtype = "nodebox",
 			sounds = def.sounds,
 			tiles = tiles,
+			groups = groups,
+			_mcl_blast_resistance = 2,
+	        _mcl_hardness = 2,
+			-- `unpack` has been changed to `table.unpack` in newest Lua versions.
+			node_box = workbench:pixelbox(16, {unpack(d, 3)}),
+			sunlight_propagates = true,
+			on_place = minetest.rotate_node
+		})
+		
+		minetest.register_node(":technic:cracked_stone_"..d[1], {
+			description = def.description.." "..d[1]:gsub("^%l", string.upper),
+			use_texture_alpha = true,
+			stack_max = 64,
+			paramtype = "light",
+			paramtype2 = "facedir",
+			drawtype = "nodebox",
+			sounds = def.sounds,
+			tiles = {"technic_cracked_stone.png"},
 			groups = groups,
 			_mcl_blast_resistance = 2,
 	        _mcl_hardness = 2,
@@ -291,14 +313,14 @@ local colour = {
 for _, colour in pairs(colour) do
 		
 minetest.register_node(":mcl_colorblocks:concrete_".. colour[1] .. "_"..d[1], {
-			description = colour[3] .. (" Concrete"),
+			description = colour[3] .. (" Concrete" ..d[1]),
 			stack_max = 64,
 			paramtype = "light",
 			paramtype2 = "facedir",
 			drawtype = "nodebox",
 			sounds = mcl_sounds.node_sound_stone_defaults(),
 			tiles = {"mcl_colorblocks_concrete_" .. colour[1] .. ".png"},
-			groups = {handy=1,pickaxey=1, concrete=1,building_block=1, material_stone=1},
+			groups = groups,
 			_mcl_blast_resistance = 1.8,
 		    _mcl_hardness = 1.8,
 			-- `unpack` has been changed to `table.unpack` in newest Lua versions.
@@ -334,8 +356,8 @@ local colour = {
 
 for _, colour in pairs(colour) do
 
-minetest.override_item("mcl_core:glass_" .. colour[4] .. "_stair", {
-	description = colour[3] .. (" Stair"),
+minetest.override_item("mcl_stairs:stair_glass_" .. colour[4], {
+	description = colour[3] .. (" Glass Stair"),
 	use_texture_alpha = true,
 	drawtype = "nodebox",
 	is_ground_content = false,
@@ -343,15 +365,15 @@ minetest.override_item("mcl_core:glass_" .. colour[4] .. "_stair", {
 	paramtype = "light",
 	sunlight_propagates = true,
 	stack_max = 64,
-	groups = {handy=1, glass=1, building_block=1, material_glass=1},
+	groups = {handy=1, glass=1, building_block=1, material_glass=1, not_in_creative_inventory = 1},
 	sounds = mcl_sounds.node_sound_glass_defaults(),
-	drop = "mcl_core:glass_" .. colour[4] .. "_stair",
+	drop = "mcl_stairs:stair_glass_" .. colour[4],
 	_mcl_blast_resistance = 0.3,
 	_mcl_hardness = 0.3,
 })
 
 minetest.override_item("mcl_core:glass_" .. colour[4] .. "_microslab", {
-	description = colour[3] .. (" Micro Slab"),
+	description = colour[3] .. (" Glass Micro Slab"),
 	use_texture_alpha = true,
 	drawtype = "nodebox",
 	is_ground_content = false,
@@ -359,7 +381,7 @@ minetest.override_item("mcl_core:glass_" .. colour[4] .. "_microslab", {
 	paramtype = "light",
 	sunlight_propagates = true,
 	stack_max = 64,
-	groups = {handy=1, glass=1, building_block=1, material_glass=1},
+	groups = {handy=1, glass=1, building_block=1, material_glass=1, not_in_creative_inventory = 1},
 	sounds = mcl_sounds.node_sound_glass_defaults(),
 	drop = "mcl_core:glass_" .. colour[4] .. "_microslab",
 	_mcl_blast_resistance = 0.3,
@@ -367,7 +389,7 @@ minetest.override_item("mcl_core:glass_" .. colour[4] .. "_microslab", {
 })
 
 minetest.override_item("mcl_core:glass_" .. colour[4] .. "_nanoslab", {
-	description = colour[3] .. (" Nano Slab"),
+	description = colour[3] .. (" Glass Nano Slab"),
 	use_texture_alpha = true,
 	drawtype = "nodebox",
 	is_ground_content = false,
@@ -375,7 +397,7 @@ minetest.override_item("mcl_core:glass_" .. colour[4] .. "_nanoslab", {
 	paramtype = "light",
 	sunlight_propagates = true,
 	stack_max = 64,
-	groups = {handy=1, glass=1, building_block=1, material_glass=1},
+	groups = {handy=1, glass=1, building_block=1, material_glass=1, not_in_creative_inventory = 1},
 	sounds = mcl_sounds.node_sound_glass_defaults(),
 	drop = "mcl_core:glass_" .. colour[4] .. "_nanoslab",
 	_mcl_blast_resistance = 0.3,
@@ -383,7 +405,7 @@ minetest.override_item("mcl_core:glass_" .. colour[4] .. "_nanoslab", {
 })
 
 minetest.override_item("mcl_core:glass_" .. colour[4] .. "_micropanel", {
-	description = colour[3] .. (" Micro Panel"),
+	description = colour[3] .. (" Glass Micro Panel"),
 	use_texture_alpha = true,
 	drawtype = "nodebox",
 	is_ground_content = false,
@@ -391,7 +413,7 @@ minetest.override_item("mcl_core:glass_" .. colour[4] .. "_micropanel", {
 	paramtype = "light",
 	sunlight_propagates = true,
 	stack_max = 64,
-	groups = {handy=1, glass=1, building_block=1, material_glass=1},
+	groups = {handy=1, glass=1, building_block=1, material_glass=1, not_in_creative_inventory = 1},
 	sounds = mcl_sounds.node_sound_glass_defaults(),
 	drop = "mcl_core:glass_" .. colour[4] .. "_micropanel",
 	_mcl_blast_resistance = 0.3,
@@ -399,7 +421,7 @@ minetest.override_item("mcl_core:glass_" .. colour[4] .. "_micropanel", {
 })
 
 minetest.override_item("mcl_core:glass_" .. colour[4] .. "_thinstair", {
-	description = colour[3] .. (" Thin Stair"),
+	description = colour[3] .. (" Glass Thin Stair"),
 	use_texture_alpha = true,
 	drawtype = "nodebox",
 	is_ground_content = false,
@@ -407,7 +429,7 @@ minetest.override_item("mcl_core:glass_" .. colour[4] .. "_thinstair", {
 	paramtype = "light",
 	sunlight_propagates = true,
 	stack_max = 64,
-	groups = {handy=1, glass=1, building_block=1, material_glass=1},
+	groups = {handy=1, glass=1, building_block=1, material_glass=1, not_in_creative_inventory = 1},
 	sounds = mcl_sounds.node_sound_glass_defaults(),
 	drop = "mcl_core:glass_" .. colour[4] .. "_thinstair",
 	_mcl_blast_resistance = 0.3,
@@ -415,7 +437,7 @@ minetest.override_item("mcl_core:glass_" .. colour[4] .. "_thinstair", {
 })
 
 minetest.override_item("mcl_core:glass_" .. colour[4] .. "_cube", {
-	description = colour[3] .. (" Cube"),
+	description = colour[3] .. (" Glass Cube"),
 	use_texture_alpha = true,
 	drawtype = "nodebox",
 	is_ground_content = false,
@@ -423,7 +445,7 @@ minetest.override_item("mcl_core:glass_" .. colour[4] .. "_cube", {
 	paramtype = "light",
 	sunlight_propagates = true,
 	stack_max = 64,
-	groups = {handy=1, glass=1, building_block=1, material_glass=1},
+	groups = {handy=1, glass=1, building_block=1, material_glass=1, not_in_creative_inventory = 1},
 	sounds = mcl_sounds.node_sound_glass_defaults(),
 	drop = "mcl_core:glass_" .. colour[4] .. "_cube",
 	_mcl_blast_resistance = 0.3,
@@ -431,7 +453,7 @@ minetest.override_item("mcl_core:glass_" .. colour[4] .. "_cube", {
 })
 
 minetest.override_item("mcl_core:glass_" .. colour[4] .. "_panel", {
-	description = colour[3] .. (" Panel"),
+	description = colour[3] .. (" Glass Panel"),
 	use_texture_alpha = true,
 	drawtype = "nodebox",
 	is_ground_content = false,
@@ -439,15 +461,15 @@ minetest.override_item("mcl_core:glass_" .. colour[4] .. "_panel", {
 	paramtype = "light",
 	sunlight_propagates = true,
 	stack_max = 64,
-	groups = {handy=1, glass=1, building_block=1, material_glass=1},
+	groups = {handy=1, glass=1, building_block=1, material_glass=1, not_in_creative_inventory = 1},
 	sounds = mcl_sounds.node_sound_glass_defaults(),
 	drop = "mcl_core:glass_" .. colour[4] .. "_panel",
 	_mcl_blast_resistance = 0.3,
 	_mcl_hardness = 0.3,
 })
 
-minetest.override_item("mcl_core:glass_" .. colour[4] .. "_slab", {
-	description = colour[3] .. (" Slab"),
+minetest.override_item("mcl_stairs:slab_glass_" .. colour[4], {
+	description = colour[3] .. (" Glass Slab"),
 	use_texture_alpha = true,
 	drawtype = "nodebox",
 	is_ground_content = false,
@@ -455,15 +477,15 @@ minetest.override_item("mcl_core:glass_" .. colour[4] .. "_slab", {
 	paramtype = "light",
 	sunlight_propagates = true,
 	stack_max = 64,
-	groups = {handy=1, glass=1, building_block=1, material_glass=1},
+	groups = {handy=1, glass=1, building_block=1, material_glass=1, not_in_creative_inventory = 1},
 	sounds = mcl_sounds.node_sound_glass_defaults(),
-	drop = "mcl_core:glass_" .. colour[4] .. "_slab",
+	drop = "mcl_stairs:slab_glass_" .. colour[4],
 	_mcl_blast_resistance = 0.3,
 	_mcl_hardness = 0.3,
 })
 
 minetest.override_item("mcl_core:glass_" .. colour[4] .. "_doublepanel", {
-	description = colour[3] .. (" Double Panel"),
+	description = colour[3] .. (" Glass Double Panel"),
 	use_texture_alpha = true,
 	drawtype = "nodebox",
 	is_ground_content = false,
@@ -471,7 +493,7 @@ minetest.override_item("mcl_core:glass_" .. colour[4] .. "_doublepanel", {
 	paramtype = "light",
 	sunlight_propagates = true,
 	stack_max = 64,
-	groups = {handy=1, glass=1, building_block=1, material_glass=1},
+	groups = {handy=1, glass=1, building_block=1, material_glass=1, not_in_creative_inventory = 1},
 	sounds = mcl_sounds.node_sound_glass_defaults(),
 	drop = "mcl_core:glass_" .. colour[4] .. "_doublepanel",
 	_mcl_blast_resistance = 0.3,
@@ -479,7 +501,7 @@ minetest.override_item("mcl_core:glass_" .. colour[4] .. "_doublepanel", {
 })
 
 minetest.override_item("mcl_core:glass_" .. colour[4] .. "_halfstair", {
-	description = colour[3] .. (" Half Stair"),
+	description = colour[3] .. (" Glass Half Stair"),
 	use_texture_alpha = true,
 	drawtype = "nodebox",
 	is_ground_content = false,
@@ -487,7 +509,7 @@ minetest.override_item("mcl_core:glass_" .. colour[4] .. "_halfstair", {
 	paramtype = "light",
 	sunlight_propagates = true,
 	stack_max = 64,
-	groups = {handy=1, glass=1, building_block=1, material_glass=1},
+	groups = {handy=1, glass=1, building_block=1, material_glass=1, not_in_creative_inventory = 1},
 	sounds = mcl_sounds.node_sound_glass_defaults(),
 	drop = "mcl_core:glass_" .. colour[4] .. "_halfstair",
 	_mcl_blast_resistance = 0.3,
@@ -495,7 +517,7 @@ minetest.override_item("mcl_core:glass_" .. colour[4] .. "_halfstair", {
 })
 
 minetest.override_item("mcl_core:glass_" .. colour[4] .. "_outerstair", {
-	description = colour[3] .. (" Outer Stair"),
+	description = colour[3] .. (" Glass Outer Stair"),
 	use_texture_alpha = true,
 	drawtype = "nodebox",
 	is_ground_content = false,
@@ -503,7 +525,7 @@ minetest.override_item("mcl_core:glass_" .. colour[4] .. "_outerstair", {
 	paramtype = "light",
 	sunlight_propagates = true,
 	stack_max = 64,
-	groups = {handy=1, glass=1, building_block=1, material_glass=1},
+	groups = {handy=1, glass=1, building_block=1, material_glass=1, not_in_creative_inventory = 1},
 	sounds = mcl_sounds.node_sound_glass_defaults(),
 	drop = "mcl_core:glass_" .. colour[4] .. "_outerstair",
 	_mcl_blast_resistance = 0.3,
@@ -511,7 +533,7 @@ minetest.override_item("mcl_core:glass_" .. colour[4] .. "_outerstair", {
 })
 
 minetest.override_item("mcl_core:glass_" .. colour[4] .. "_innerstair", {
-	description = colour[3] .. (" Inner Stair"),
+	description = colour[3] .. (" Glass Inner Stair"),
 	use_texture_alpha = true,
 	drawtype = "nodebox",
 	is_ground_content = false,
@@ -519,15 +541,15 @@ minetest.override_item("mcl_core:glass_" .. colour[4] .. "_innerstair", {
 	paramtype = "light",
 	sunlight_propagates = true,
 	stack_max = 64,
-	groups = {handy=1, glass=1, building_block=1, material_glass=1},
+	groups = {handy=1, glass=1, building_block=1, material_glass=1, not_in_creative_inventory = 1},
 	sounds = mcl_sounds.node_sound_glass_defaults(),
 	drop = "mcl_core:glass_" .. colour[4] .. "_innerstair",
 	_mcl_blast_resistance = 0.3,
 	_mcl_hardness = 0.3,
 })
 
-minetest.override_item("mcl_core:glass_stair", {
-	description = ("Stair"),
+minetest.override_item("mcl_stairs:stair_glass", {
+	description = ("Glass Stair"),
 	use_texture_alpha = true,
 	drawtype = "nodebox",
 	is_ground_content = false,
@@ -535,15 +557,15 @@ minetest.override_item("mcl_core:glass_stair", {
 	paramtype = "light",
 	sunlight_propagates = true,
 	stack_max = 64,
-	groups = {handy=1, glass=1, building_block=1, material_glass=1},
+	groups = {handy=1, glass=1, building_block=1, material_glass=1, not_in_creative_inventory = 1},
 	sounds = mcl_sounds.node_sound_glass_defaults(),
-	drop = "mcl_core:glass_stair",
+	drop = "mcl_stairs:stair_glass",
 	_mcl_blast_resistance = 0.3,
 	_mcl_hardness = 0.3,
 })
 
 minetest.override_item("mcl_core:glass_microslab", {
-	description = ("Micro Slab"),
+	description = ("Glass Micro Slab"),
 	use_texture_alpha = true,
 	drawtype = "nodebox",
 	is_ground_content = false,
@@ -551,7 +573,7 @@ minetest.override_item("mcl_core:glass_microslab", {
 	paramtype = "light",
 	sunlight_propagates = true,
 	stack_max = 64,
-	groups = {handy=1, glass=1, building_block=1, material_glass=1},
+	groups = {handy=1, glass=1, building_block=1, material_glass=1, not_in_creative_inventory = 1},
 	sounds = mcl_sounds.node_sound_glass_defaults(),
 	drop = "mcl_core:glass_microslab",
 	_mcl_blast_resistance = 0.3,
@@ -559,7 +581,7 @@ minetest.override_item("mcl_core:glass_microslab", {
 })
 
 minetest.override_item("mcl_core:glass_nanoslab", {
-	description = ("Nano Slab"),
+	description = ("Glass Nano Slab"),
 	use_texture_alpha = true,
 	drawtype = "nodebox",
 	is_ground_content = false,
@@ -567,7 +589,7 @@ minetest.override_item("mcl_core:glass_nanoslab", {
 	paramtype = "light",
 	sunlight_propagates = true,
 	stack_max = 64,
-	groups = {handy=1, glass=1, building_block=1, material_glass=1},
+	groups = {handy=1, glass=1, building_block=1, material_glass=1, not_in_creative_inventory = 1},
 	sounds = mcl_sounds.node_sound_glass_defaults(),
 	drop = "mcl_core:glass_nanoslab",
 	_mcl_blast_resistance = 0.3,
@@ -575,7 +597,7 @@ minetest.override_item("mcl_core:glass_nanoslab", {
 })
 
 minetest.override_item("mcl_core:glass_micropanel", {
-	description = ("Micro Panel"),
+	description = ("Glass Micro Panel"),
 	use_texture_alpha = true,
 	drawtype = "nodebox",
 	is_ground_content = false,
@@ -583,7 +605,7 @@ minetest.override_item("mcl_core:glass_micropanel", {
 	paramtype = "light",
 	sunlight_propagates = true,
 	stack_max = 64,
-	groups = {handy=1, glass=1, building_block=1, material_glass=1},
+	groups = {handy=1, glass=1, building_block=1, material_glass=1, not_in_creative_inventory = 1},
 	sounds = mcl_sounds.node_sound_glass_defaults(),
 	drop = "mcl_core:glass_micropanel",
 	_mcl_blast_resistance = 0.3,
@@ -591,7 +613,7 @@ minetest.override_item("mcl_core:glass_micropanel", {
 })
 
 minetest.override_item("mcl_core:glass_thinstair", {
-	description = ("Thin Stair"),
+	description = ("Glass Thin Stair"),
 	use_texture_alpha = true,
 	drawtype = "nodebox",
 	is_ground_content = false,
@@ -599,7 +621,7 @@ minetest.override_item("mcl_core:glass_thinstair", {
 	paramtype = "light",
 	sunlight_propagates = true,
 	stack_max = 64,
-	groups = {handy=1, glass=1, building_block=1, material_glass=1},
+	groups = {handy=1, glass=1, building_block=1, material_glass=1, not_in_creative_inventory = 1},
 	sounds = mcl_sounds.node_sound_glass_defaults(),
 	drop = "mcl_core:glass_thinstair",
 	_mcl_blast_resistance = 0.3,
@@ -607,7 +629,7 @@ minetest.override_item("mcl_core:glass_thinstair", {
 })
 
 minetest.override_item("mcl_core:glass_cube", {
-	description = ("Cube"),
+	description = ("Glass Cube"),
 	use_texture_alpha = true,
 	drawtype = "nodebox",
 	is_ground_content = false,
@@ -615,7 +637,7 @@ minetest.override_item("mcl_core:glass_cube", {
 	paramtype = "light",
 	sunlight_propagates = true,
 	stack_max = 64,
-	groups = {handy=1, glass=1, building_block=1, material_glass=1},
+	groups = {handy=1, glass=1, building_block=1, material_glass=1, not_in_creative_inventory = 1},
 	sounds = mcl_sounds.node_sound_glass_defaults(),
 	drop = "mcl_core:glass_cube",
 	_mcl_blast_resistance = 0.3,
@@ -623,7 +645,7 @@ minetest.override_item("mcl_core:glass_cube", {
 })
 
 minetest.override_item("mcl_core:glass_panel", {
-	description = ("Panel"),
+	description = ("Glass Panel"),
 	use_texture_alpha = true,
 	drawtype = "nodebox",
 	is_ground_content = false,
@@ -631,15 +653,15 @@ minetest.override_item("mcl_core:glass_panel", {
 	paramtype = "light",
 	sunlight_propagates = true,
 	stack_max = 64,
-	groups = {handy=1, glass=1, building_block=1, material_glass=1},
+	groups = {handy=1, glass=1, building_block=1, material_glass=1, not_in_creative_inventory = 1},
 	sounds = mcl_sounds.node_sound_glass_defaults(),
 	drop = "mcl_core:glass_panel",
 	_mcl_blast_resistance = 0.3,
 	_mcl_hardness = 0.3,
 })
 
-minetest.override_item("mcl_core:glass_slab", {
-	description = ("Slab"),
+minetest.override_item("mcl_stairs:slab_glass", {
+	description = ("Glass Slab"),
 	use_texture_alpha = true,
 	drawtype = "nodebox",
 	is_ground_content = false,
@@ -647,15 +669,15 @@ minetest.override_item("mcl_core:glass_slab", {
 	paramtype = "light",
 	sunlight_propagates = true,
 	stack_max = 64,
-	groups = {handy=1, glass=1, building_block=1, material_glass=1},
+	groups = {handy=1, glass=1, building_block=1, material_glass=1, not_in_creative_inventory = 1},
 	sounds = mcl_sounds.node_sound_glass_defaults(),
-	drop = "mcl_core:glass_slab",
+	drop = "mcl_stairs:slab_glass",
 	_mcl_blast_resistance = 0.3,
 	_mcl_hardness = 0.3,
 })
 
 minetest.override_item("mcl_core:glass_doublepanel", {
-	description = ("Double Panel"),
+	description = ("Glass Double Panel"),
 	use_texture_alpha = true,
 	drawtype = "nodebox",
 	is_ground_content = false,
@@ -663,7 +685,7 @@ minetest.override_item("mcl_core:glass_doublepanel", {
 	paramtype = "light",
 	sunlight_propagates = true,
 	stack_max = 64,
-	groups = {handy=1, glass=1, building_block=1, material_glass=1},
+	groups = {handy=1, glass=1, building_block=1, material_glass=1, not_in_creative_inventory = 1},
 	sounds = mcl_sounds.node_sound_glass_defaults(),
 	drop = "mcl_core:glass_doublepanel",
 	_mcl_blast_resistance = 0.3,
@@ -671,7 +693,7 @@ minetest.override_item("mcl_core:glass_doublepanel", {
 })
 
 minetest.override_item("mcl_core:glass_halfstair", {
-	description = ("Half Stair"),
+	description = ("Glass Half Stair"),
 	use_texture_alpha = true,
 	drawtype = "nodebox",
 	is_ground_content = false,
@@ -679,7 +701,7 @@ minetest.override_item("mcl_core:glass_halfstair", {
 	paramtype = "light",
 	sunlight_propagates = true,
 	stack_max = 64,
-	groups = {handy=1, glass=1, building_block=1, material_glass=1},
+	groups = {handy=1, glass=1, building_block=1, material_glass=1, not_in_creative_inventory = 1},
 	sounds = mcl_sounds.node_sound_glass_defaults(),
 	drop = "mcl_core:glass_halfstair",
 	_mcl_blast_resistance = 0.3,
@@ -687,7 +709,7 @@ minetest.override_item("mcl_core:glass_halfstair", {
 })
 
 minetest.override_item("mcl_core:glass_outerstair", {
-	description = ("Outer Stair"),
+	description = ("Glass Outer Stair"),
 	use_texture_alpha = true,
 	drawtype = "nodebox",
 	is_ground_content = false,
@@ -695,7 +717,7 @@ minetest.override_item("mcl_core:glass_outerstair", {
 	paramtype = "light",
 	sunlight_propagates = true,
 	stack_max = 64,
-	groups = {handy=1, glass=1, building_block=1, material_glass=1},
+	groups = {handy=1, glass=1, building_block=1, material_glass=1, not_in_creative_inventory = 1},
 	sounds = mcl_sounds.node_sound_glass_defaults(),
 	drop = "mcl_core:glass_outerstair",
 	_mcl_blast_resistance = 0.3,
@@ -703,7 +725,7 @@ minetest.override_item("mcl_core:glass_outerstair", {
 })
 
 minetest.override_item("mcl_core:glass_innerstair", {
-	description = ("Inner Stair"),
+	description = ("Glass Inner Stair"),
 	use_texture_alpha = true,
 	drawtype = "nodebox",
 	is_ground_content = false,
@@ -711,7 +733,7 @@ minetest.override_item("mcl_core:glass_innerstair", {
 	paramtype = "light",
 	sunlight_propagates = true,
 	stack_max = 64,
-	groups = {handy=1, glass=1, building_block=1, material_glass=1},
+	groups = {handy=1, glass=1, building_block=1, material_glass=1, not_in_creative_inventory = 1},
 	sounds = mcl_sounds.node_sound_glass_defaults(),
 	drop = "mcl_core:glass_innerstair",
 	_mcl_blast_resistance = 0.3,
