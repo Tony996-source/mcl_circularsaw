@@ -320,9 +320,9 @@ minetest.register_node(":mcl_colorblocks:concrete_".. colour[1] .. "_"..d[1], {
 			drawtype = "nodebox",
 			sounds = mcl_sounds.node_sound_stone_defaults(),
 			tiles = {"mcl_colorblocks_concrete_" .. colour[1] .. ".png"},
-			groups = groups,
-			_mcl_blast_resistance = 1.8,
-		    _mcl_hardness = 1.8,
+			groups = {pickaxey=2},
+			_mcl_blast_resistance = 2,
+	        _mcl_hardness = 2,
 			-- `unpack` has been changed to `table.unpack` in newest Lua versions.
 			node_box = workbench:pixelbox(16, {unpack(d, 3)}),
 			sunlight_propagates = true,
