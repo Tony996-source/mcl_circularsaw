@@ -5,3 +5,6 @@ mcl_colorblocks?
 mcl_ocean?
 mcl_stairs?
 mcl_formspecs?
+mcl_craftguide?
+mclx_stairs?
+technic?
