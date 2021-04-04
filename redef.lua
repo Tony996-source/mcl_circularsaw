@@ -36,7 +36,7 @@ minetest.override_item("mcl_stairs:slab_concrete_"..colour[1], {
 -- Glass
 --
 
-minetest.override_item("mcl_stairs:stair_glass_" .. colour[4], {
+minetest.override_item("mcl_stairs:stair_glass_"..colour[4], {
 	description = colour[3] .. (" Glass Stair"),
 	use_texture_alpha = true,
 	drawtype = "nodebox",
@@ -148,7 +148,7 @@ minetest.override_item("mcl_core:glass_" .. colour[4] .. "_panel", {
 	_mcl_hardness = 0.3,
 })
 
-minetest.override_item("mcl_stairs:slab_glass_" .. colour[4], {
+minetest.override_item("mcl_stairs:slab_glass_"..colour[4], {
 	description = colour[3] .. (" Glass Slab"),
 	use_texture_alpha = true,
 	drawtype = "nodebox",

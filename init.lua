@@ -180,7 +180,7 @@ function workbench.on_take(pos, listname, index, stack, player)
 end
 
 minetest.register_node("mcl_circularsaw:circularsaw", {
-	description = "Work Bench",
+	description = "Circular Saw",
 	drawtype = "nodebox",
 	node_box = {
 		type = "fixed",
