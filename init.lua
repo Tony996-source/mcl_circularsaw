@@ -54,16 +54,39 @@ workbench.defs = {
 	{"cube", 	4,  { 0, 0,  0, 8,  8, 8  }},
 	{"panel",	4,  { 0, 0,  0, 16, 8, 8  }},
 	{"slab", 	2,  nil			  },
-	{"doublepanel", 2,  { 0, 0,  0, 16, 8, 8  },
-			    { 0, 8,  8, 16, 8, 8  }},
-	{"halfstair",	2,  { 0, 0,  0, 8,  8, 16 },
-			    { 0, 8,  8, 8,  8, 8  }},
-	{"outerstair",	1,  { 0, 0,  0, 16, 8, 16 },
-			    { 0, 8,  8, 8,  8, 8  }},
 	{"stair",	1,  nil			  },
-	{"innerstair",	1,  { 0, 0,  0, 16, 8, 16 },
-			    { 0, 8,  8, 16, 8, 8  },
-			    { 0, 8,  0, 8,  8, 8  }}
+	{"halfslope",	1,  { 0, 0,  0, 16, 1, 16 },
+			    { 0, 1,  2, 16, 1, 14  },
+			    { 0, 2,  4, 16,  1, 12  },
+			    {0, 3, 6, 16, 1, 10},
+			    {0, 4, 8, 16, 1, 8},
+			    {0, 5, 10, 16, 1, 6},
+			    {0, 6, 12, 16, 1, 4},
+			    {0, 7, 14, 16, 1, 2}},
+	{"halfslope2",	1,  { 0, 0,  0, 16, 8, 16 },
+	            {0, 8, 2, 16, 1, 14},
+	            {0, 9, 4, 16, 1, 12},
+	            {0, 10, 6, 16, 1, 10},
+	            {0, 11, 8, 16, 1, 8},
+	            {0, 12, 10, 16, 1, 6},
+	            {0, 13, 12, 16, 1, 4},
+	            {0, 14, 14, 16, 1, 2}},
+	{"slope",	1,  { 0, 0,  0, 16, 1, 16 },
+			    { 0, 1,  1, 16,  1, 15  },
+			    {0, 2, 2, 16, 1, 14},
+			    {0, 3, 3, 16, 1, 13},
+			    {0, 4, 4, 16, 1, 12},
+			    {0, 5, 5, 16, 1, 11},
+			    {0, 6, 6, 16, 1, 10},
+			    {0, 7, 7, 16, 1, 9},
+			    {0, 8, 8, 16, 1, 8},
+			    {0, 9, 9, 16, 1, 7},
+			    {0, 10, 10, 16, 1, 6},
+			    {0, 11, 11, 16, 1, 5},
+			    {0, 12, 12, 16, 1, 4},
+			    {0, 13, 13, 16, 1, 3},
+			    {0, 14, 14, 16, 1, 2},
+			    {0, 15, 15, 16, 1, 1}},
 }
 
 function workbench:get_output(inv, input, name)
@@ -99,11 +122,11 @@ local formspecs = {
 	-- Main formspec
 	"label[0,0;Circular Saw]"..
 	  mcl_formspec.get_itemslot_bg(1.5,1,1,1)..
-      mcl_formspec.get_itemslot_bg(4,0,4,3)..
+      mcl_formspec.get_itemslot_bg(4,0,5,3)..
 	  [[image[2.7,1;1,1;gui_furnace_arrow_bg.png^[transformR270]
 	   image[0.5,1;1,1;workbench_saw.png]
 	   list[context;input;1.5,1;1,1;]
-	   list[context;forms;4,0;4,3;] ]],
+	   list[context;forms;4,0;5,3;] ]],
 }
 
 function workbench:set_formspec(meta, id)
@@ -301,6 +324,10 @@ end
 end
 end
 
+---------------------------------------------------------------
+-------------------- Override items----------------------------
+---------------------------------------------------------------
+
 local colour = {
 --     Node          dye       Description    Glass Colour
 	{"white",      "white",      "White",      "white"},
@@ -343,144 +370,176 @@ minetest.override_item("mcl_stairs:stair_glass_"..colour[4], {
 	use_texture_alpha = true,
 	tiles = {"coloured_glass_" .. colour[1] .. ".png"},
 	sunlight_propagates = true,
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
 })
 
 minetest.override_item("mcl_core:glass_" .. colour[4] .. "_microslab", {
 	use_texture_alpha = true,
 	tiles = {"coloured_glass_" .. colour[1] .. ".png"},
 	sunlight_propagates = true,
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
 })
 
 minetest.override_item("mcl_core:glass_" .. colour[4] .. "_nanoslab", {
 	use_texture_alpha = true,
 	tiles = {"coloured_glass_" .. colour[1] .. ".png"},
 	sunlight_propagates = true,
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
 })
 
 minetest.override_item("mcl_core:glass_" .. colour[4] .. "_micropanel", {
 	use_texture_alpha = true,
 	tiles = {"coloured_glass_" .. colour[1] .. ".png"},
 	sunlight_propagates = true,
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
 })
 
 minetest.override_item("mcl_core:glass_" .. colour[4] .. "_thinstair", {
 	use_texture_alpha = true,
 	tiles = {"coloured_glass_" .. colour[1] .. ".png"},
 	sunlight_propagates = true,
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
 })
 
 minetest.override_item("mcl_core:glass_" .. colour[4] .. "_cube", {
 	use_texture_alpha = true,
 	tiles = {"coloured_glass_" .. colour[1] .. ".png"},
 	sunlight_propagates = true,
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
 })
 
 minetest.override_item("mcl_core:glass_" .. colour[4] .. "_panel", {
 	use_texture_alpha = true,
 	tiles = {"coloured_glass_" .. colour[1] .. ".png"},
 	sunlight_propagates = true,
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
 })
 
 minetest.override_item("mcl_stairs:slab_glass_"..colour[4], {
 	use_texture_alpha = true,
 	tiles = {"coloured_glass_" .. colour[1] .. ".png"},
 	sunlight_propagates = true,
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
 })
 
-minetest.override_item("mcl_core:glass_" .. colour[4] .. "_doublepanel", {
+minetest.override_item("mcl_core:glass_" .. colour[4] .. "_halfslope2", {
 	use_texture_alpha = true,
 	tiles = {"coloured_glass_" .. colour[1] .. ".png"},
 	sunlight_propagates = true,
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
 })
 
-minetest.override_item("mcl_core:glass_" .. colour[4] .. "_halfstair", {
+minetest.override_item("mcl_core:glass_" .. colour[4] .. "_slope", {
 	use_texture_alpha = true,
 	tiles = {"coloured_glass_" .. colour[1] .. ".png"},
 	sunlight_propagates = true,
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
 })
 
-minetest.override_item("mcl_core:glass_" .. colour[4] .. "_outerstair", {
+minetest.override_item("mcl_core:glass_" .. colour[4] .. "_halfslope", {
 	use_texture_alpha = true,
 	tiles = {"coloured_glass_" .. colour[1] .. ".png"},
 	sunlight_propagates = true,
-})
-
-minetest.override_item("mcl_core:glass_" .. colour[4] .. "_innerstair", {
-	use_texture_alpha = true,
-	tiles = {"coloured_glass_" .. colour[1] .. ".png"},
-	sunlight_propagates = true,
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
 })
 
 minetest.override_item("mcl_stairs:stair_glass", {
 	use_texture_alpha = true,
 	tiles = {"coloured_glass_clear_framed.png"},
 	sunlight_propagates = true,
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
 })
 
 minetest.override_item("mcl_core:glass_microslab", {
 	use_texture_alpha = true,
 	tiles = {"coloured_glass_clear_framed.png"},
 	sunlight_propagates = true,
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
 })
 
 minetest.override_item("mcl_core:glass_nanoslab", {
 	use_texture_alpha = true,
 	tiles = {"coloured_glass_clear_framed.png"},
 	sunlight_propagates = true,
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
 })
 
 minetest.override_item("mcl_core:glass_micropanel", {
 	use_texture_alpha = true,
 	tiles = {"coloured_glass_clear_framed.png"},
     sunlight_propagates = true,
+    _mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
 })
 
 minetest.override_item("mcl_core:glass_thinstair", {
 	use_texture_alpha = true,
 	tiles = {"coloured_glass_clear_framed.png"},
 	sunlight_propagates = true,
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
 })
 
 minetest.override_item("mcl_core:glass_cube", {
 	use_texture_alpha = true,
 	tiles = {"coloured_glass_clear_framed.png"},
 	sunlight_propagates = true,
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
 })
 
 minetest.override_item("mcl_core:glass_panel", {
 	use_texture_alpha = true,
 	tiles = {"coloured_glass_clear_framed.png"},
 	sunlight_propagates = true,
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
 })
 
 minetest.override_item("mcl_stairs:slab_glass", {
 	use_texture_alpha = true,
 	tiles = {"coloured_glass_clear_framed.png"},
 	sunlight_propagates = true,
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
 })
 
-minetest.override_item("mcl_core:glass_doublepanel", {
+minetest.override_item("mcl_core:glass_halfslope2", {
 	use_texture_alpha = true,
 	tiles = {"coloured_glass_clear_framed.png"},
 	sunlight_propagates = true,
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
 })
 
-minetest.override_item("mcl_core:glass_halfstair", {
+minetest.override_item("mcl_core:glass_slope", {
 	use_texture_alpha = true,
 	tiles = {"coloured_glass_clear_framed.png"},
 	sunlight_propagates = true,
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
 })
 
-minetest.override_item("mcl_core:glass_outerstair", {
+minetest.override_item("mcl_core:glass_halfslope", {
 	use_texture_alpha = true,
 	tiles = {"coloured_glass_clear_framed.png"},
 	sunlight_propagates = true,
-})
-
-minetest.override_item("mcl_core:glass_innerstair", {
-	use_texture_alpha = true,
-	tiles = {"coloured_glass_clear_framed.png"},
-	sunlight_propagates = true,
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
 })
 
 --
