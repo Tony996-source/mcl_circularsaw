@@ -27,7 +27,7 @@ for node, def in pairs(minetest.registered_nodes) do
 	end
 end
 
--- Optionally, you can register custom cuttable nodes in the workbench
+-- Optionally, you can register custom cuttable nodes in the circular saw
 WB.custom_nodes_register = {
 
 }
@@ -404,7 +404,6 @@ for i=1, #nodes do
 
 		minetest.register_node(":"..node.."_"..d[1], {
 			description = def.description.." "..d[1]:gsub("^%l", string.upper),
-			use_texture_alpha = true,
 			stack_max = 64,
 			paramtype = "light",
 			paramtype2 = "facedir",
@@ -422,7 +421,6 @@ for i=1, #nodes do
 		
 		minetest.register_node(":technic:cracked_stone_"..d[1], {
 			description = def.description.." "..d[1]:gsub("^%l", string.upper),
-			use_texture_alpha = true,
 			stack_max = 64,
 			paramtype = "light",
 			paramtype2 = "facedir",
@@ -484,8 +482,8 @@ minetest.override_item("mcl_stairs:slab_concrete_"..colour[1], {
 --
 
 minetest.override_item("mcl_stairs:stair_glass_"..colour[4], {
-	use_texture_alpha = true,
 	tiles = {"coloured_glass_" .. colour[1] .. ".png"},
+	use_texture_alpha = true,
 	sunlight_propagates = true,
 	_mcl_blast_resistance = 0.3,
 	_mcl_hardness = 0.3,
@@ -533,8 +531,8 @@ minetest.override_item("mcl_core:glass_" .. colour[4] .. "_cube", {
 
 minetest.override_item("mcl_core:glass_" .. colour[4] .. "_panel", {
 	use_texture_alpha = true,
+    sunlight_propagates = true,
 	tiles = {"coloured_glass_" .. colour[1] .. ".png"},
-	sunlight_propagates = true,
 	_mcl_blast_resistance = 0.3,
 	_mcl_hardness = 0.3,
 })
