@@ -571,6 +571,78 @@ minetest.override_item("mcl_core:glass_" .. colour[4] .. "_halfslope", {
 	_mcl_hardness = 0.3,
 })
 
+minetest.override_item("mcl_core:glass_" .. colour[4] .. "_halfslope_outercorner", {
+	use_texture_alpha = true,
+	tiles = {"coloured_glass_" .. colour[1] .. ".png"},
+	sunlight_propagates = true,
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
+})
+
+minetest.override_item("mcl_core:glass_" .. colour[4] .. "_halfslope_innercorner", {
+	use_texture_alpha = true,
+	tiles = {"coloured_glass_" .. colour[1] .. ".png"},
+	sunlight_propagates = true,
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
+})
+
+minetest.override_item("mcl_core:glass_" .. colour[4] .. "_halfslope2_outercorner", {
+	use_texture_alpha = true,
+	tiles = {"coloured_glass_" .. colour[1] .. ".png"},
+	sunlight_propagates = true,
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
+})
+
+minetest.override_item("mcl_core:glass_" .. colour[4] .. "_halfslope2_innercorner", {
+	use_texture_alpha = true,
+	tiles = {"coloured_glass_" .. colour[1] .. ".png"},
+	sunlight_propagates = true,
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
+})
+
+minetest.override_item("mcl_core:glass_" .. colour[4] .. "_slope_innercorner", {
+	use_texture_alpha = true,
+	tiles = {"coloured_glass_" .. colour[1] .. ".png"},
+	sunlight_propagates = true,
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
+})
+
+minetest.override_item("mcl_core:glass_" .. colour[4] .. "_slope_outercorner", {
+	use_texture_alpha = true,
+	tiles = {"coloured_glass_" .. colour[1] .. ".png"},
+	sunlight_propagates = true,
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
+})
+
+minetest.override_item("mcl_core:glass_" .. colour[4] .. "_pyramid", {
+	use_texture_alpha = true,
+	tiles = {"coloured_glass_" .. colour[1] .. ".png"},
+	sunlight_propagates = true,
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
+})
+
+minetest.override_item("mcl_core:glass_" .. colour[4] .. "_spike", {
+	use_texture_alpha = true,
+	tiles = {"coloured_glass_" .. colour[1] .. ".png"},
+	sunlight_propagates = true,
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
+})
+
+minetest.override_item("mcl_core:glass_" .. colour[4] .. "_Triangular_Prism", {
+	use_texture_alpha = true,
+	tiles = {"coloured_glass_" .. colour[1] .. ".png"},
+	sunlight_propagates = true,
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
+})
+
 minetest.override_item("mcl_stairs:stair_glass", {
 	use_texture_alpha = true,
 	tiles = {"coloured_glass_clear_framed.png"},
@@ -654,6 +726,78 @@ minetest.override_item("mcl_core:glass_slope", {
 minetest.override_item("mcl_core:glass_halfslope", {
 	use_texture_alpha = true,
 	tiles = {"coloured_glass_clear_framed.png"},
+	sunlight_propagates = true,
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
+})
+
+minetest.override_item("mcl_core:glass_halfslope_outercorner", {
+	use_texture_alpha = true,
+	tiles = {"coloured_glass_" .. colour[1] .. ".png"},
+	sunlight_propagates = true,
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
+})
+
+minetest.override_item("mcl_core:glass_halfslope_innercorner", {
+	use_texture_alpha = true,
+	tiles = {"coloured_glass_" .. colour[1] .. ".png"},
+	sunlight_propagates = true,
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
+})
+
+minetest.override_item("mcl_core:glass_halfslope2_outercorner", {
+	use_texture_alpha = true,
+	tiles = {"coloured_glass_" .. colour[1] .. ".png"},
+	sunlight_propagates = true,
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
+})
+
+minetest.override_item("mcl_core:glass_halfslope2_innercorner", {
+	use_texture_alpha = true,
+	tiles = {"coloured_glass_" .. colour[1] .. ".png"},
+	sunlight_propagates = true,
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
+})
+
+minetest.override_item("mcl_core:glass_slope_innercorner", {
+	use_texture_alpha = true,
+	tiles = {"coloured_glass_" .. colour[1] .. ".png"},
+	sunlight_propagates = true,
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
+})
+
+minetest.override_item("mcl_core:glass_slope_outercorner", {
+	use_texture_alpha = true,
+	tiles = {"coloured_glass_" .. colour[1] .. ".png"},
+	sunlight_propagates = true,
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
+})
+
+minetest.override_item("mcl_core:glass_pyramid", {
+	use_texture_alpha = true,
+	tiles = {"coloured_glass_" .. colour[1] .. ".png"},
+	sunlight_propagates = true,
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
+})
+
+minetest.override_item("mcl_core:glass_spike", {
+	use_texture_alpha = true,
+	tiles = {"coloured_glass_" .. colour[1] .. ".png"},
+	sunlight_propagates = true,
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
+})
+
+minetest.override_item("mcl_core:glass_Triangular_Prism", {
+	use_texture_alpha = true,
+	tiles = {"coloured_glass_" .. colour[1] .. ".png"},
 	sunlight_propagates = true,
 	_mcl_blast_resistance = 0.3,
 	_mcl_hardness = 0.3,
