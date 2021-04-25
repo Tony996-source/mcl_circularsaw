@@ -411,8 +411,8 @@ for i=1, #nodes do
 			sounds = def.sounds,
 			tiles = tiles,
 			groups = groups,
-			_mcl_blast_resistance = 2,
-	        _mcl_hardness = 2,
+			_mcl_blast_resistance = def._mcl_blast_resistance,
+		    _mcl_hardness = def._mcl_hardness,
 			-- `unpack` has been changed to `table.unpack` in newest Lua versions.
 			node_box = workbench:pixelbox(16, {unpack(d, 3)}),
 			sunlight_propagates = true,
@@ -428,8 +428,8 @@ for i=1, #nodes do
 			sounds = def.sounds,
 			tiles = {"technic_cracked_stone.png"},
 			groups = groups,
-			_mcl_blast_resistance = 2,
-	        _mcl_hardness = 2,
+			_mcl_blast_resistance = def._mcl_blast_resistance,
+		    _mcl_hardness = def._mcl_hardness,
 			-- `unpack` has been changed to `table.unpack` in newest Lua versions.
 			node_box = workbench:pixelbox(16, {unpack(d, 3)}),
 			sunlight_propagates = true,
@@ -477,6 +477,95 @@ minetest.override_item("mcl_stairs:slab_concrete_"..colour[1], {
 	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
 })
 
+minetest.override_item("mcl_colorblocks:concrete_" .. colour[1] .. "_microslab", {
+	_mcl_blast_resistance = 0.5,
+	_mcl_hardness = 0.5,
+})
+
+minetest.override_item("mcl_colorblocks:concrete_" .. colour[1] .. "_nanoslab", {
+	_mcl_blast_resistance = 0.5,
+	_mcl_hardness = 0.5,
+})
+
+minetest.override_item("mcl_colorblocks:concrete_" .. colour[1] .. "_micropanel", {
+	_mcl_blast_resistance = 0.5,
+	_mcl_hardness = 0.5,
+})
+
+minetest.override_item("mcl_colorblocks:concrete_" .. colour[1] .. "_thinstair", {
+	_mcl_blast_resistance = 0.5,
+	_mcl_hardness = 0.5,
+})
+
+minetest.override_item("mcl_colorblocks:concrete_" .. colour[1] .. "_cube", {
+	_mcl_blast_resistance = 0.5,
+	_mcl_hardness = 0.5,
+})
+
+minetest.override_item("mcl_colorblocks:concrete_" .. colour[1] .. "_panel", {
+	_mcl_blast_resistance = 0.5,
+	_mcl_hardness = 0.5,
+})
+
+minetest.override_item("mcl_colorblocks:concrete_" .. colour[1] .. "_halfslope2", {
+	_mcl_blast_resistance = 0.5,
+	_mcl_hardness = 0.5,
+})
+
+minetest.override_item("mcl_colorblocks:concrete_" .. colour[1] .. "_slope", {
+	_mcl_blast_resistance = 0.5,
+	_mcl_hardness = 0.5,
+})
+
+minetest.override_item("mcl_colorblocks:concrete_" .. colour[1] .. "_halfslope", {
+	_mcl_blast_resistance = 0.5,
+	_mcl_hardness = 0.5,
+})
+
+minetest.override_item("mcl_colorblocks:concrete_" .. colour[1] .. "_halfslope_outercorner", {
+	_mcl_blast_resistance = 0.5,
+	_mcl_hardness = 0.5,
+})
+
+minetest.override_item("mcl_colorblocks:concrete_" .. colour[1] .. "_halfslope_innercorner", {
+	_mcl_blast_resistance = 0.5,
+	_mcl_hardness = 0.5,
+})
+
+minetest.override_item("mcl_colorblocks:concrete_" .. colour[1] .. "_halfslope2_outercorner", {
+	_mcl_blast_resistance = 0.5,
+	_mcl_hardness = 0.5,
+})
+
+minetest.override_item("mcl_colorblocks:concrete_" .. colour[1] .. "_halfslope2_innercorner", {
+	_mcl_blast_resistance = 0.5,
+	_mcl_hardness = 0.5,
+})
+
+minetest.override_item("mcl_colorblocks:concrete_" .. colour[1] .. "_slope_innercorner", {
+	_mcl_blast_resistance = 0.5,
+	_mcl_hardness = 0.5,
+})
+
+minetest.override_item("mcl_colorblocks:concrete_" .. colour[1] .. "_slope_outercorner", {
+	_mcl_blast_resistance = 0.5,
+	_mcl_hardness = 0.5,
+})
+
+minetest.override_item("mcl_colorblocks:concrete_" .. colour[1] .. "_pyramid", {
+	_mcl_blast_resistance = 0.5,
+	_mcl_hardness = 0.5,
+})
+
+minetest.override_item("mcl_colorblocks:concrete_" .. colour[1] .. "_spike", {
+	_mcl_blast_resistance = 0.5,
+	_mcl_hardness = 0.5,
+})
+
+minetest.override_item("mcl_colorblocks:concrete_" .. colour[1] .. "_Triangular_Prism", {
+	_mcl_blast_resistance = 0.5,
+	_mcl_hardness = 0.5,
+})
 --
 -- Glass
 --
