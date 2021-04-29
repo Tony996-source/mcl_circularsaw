@@ -47,15 +47,20 @@ nodes = nodes..WB.custom_nodes_register
 workbench.defs = {
 	-- Name       Yield   X  Y   Z  W   H  L
 	{"nanoslab",	16, { 0, 0,  0, 8,  1, 8  }},
+	{"nanoslab_center", 16, {4, 0, 4, 8, 1, 8}},
 	{"micropanel",	16, { 0, 0,  0, 16, 1, 8  }},
 	{"microslab",	8,  { 0, 0,  0, 16, 1, 16 }},
+	{"slab_corner", 2,  { 0, 0, 0, 16, 1, 16},
+	            { 0, 0, 15, 16, 16, 1}},
 	{"thinstair",	8,  { 0, 7,  0, 16, 1, 8  },
 			    { 0, 15, 8, 16, 1, 8  }},
 	{"cube", 	4,  { 0, 0,  0, 8,  8, 8  }},
+	{"cube_center", 4, {4, 0, 4, 8, 8, 8}},
 	{"panel",	4,  { 0, 0,  0, 16, 8, 8  }},
+	{"pole",    4,  { 4, 0, 4, 8, 16, 8}},
 	{"slab", 	2,  nil			  },
 	{"stair",	1,  nil			  },
-	{"halfslope",	1,  { 0, 0,  0, 16, 1, 16 },
+	{"halfslope",	2,  { 0, 0,  0, 16, 1, 16 },
 			    { 0, 1,  2, 16, 1, 14  },
 			    { 0, 2,  4, 16,  1, 12  },
 			    {0, 3, 6, 16, 1, 10},
@@ -117,7 +122,7 @@ workbench.defs = {
 	            {12, 14, 0, 4, 1, 16},
 	            {0, 15, 14, 16, 1, 2},
 	            {14, 15, 0, 2, 1, 16}},
-	{"slope",	1,  { 0, 0,  0, 16, 1, 16 },
+	{"slope",	2,  { 0, 0,  0, 16, 1, 16 },
 			    { 0, 1,  1, 16,  1, 15  },
 			    {0, 2, 2, 16, 1, 14},
 			    {0, 3, 3, 16, 1, 13},
@@ -180,7 +185,7 @@ workbench.defs = {
 	            {14, 14, 0, 2, 1, 16},
 	            {0, 15, 15, 16, 1, 1},
 	            {15, 15, 0, 1, 1, 16}},
-	{"pyramid",	1,  { 0, 0,  0, 16, 1, 16 },
+	{"pyramid",	6,  { 0, 0,  0, 16, 1, 16 },
 			    { 1, 1,  1, 14,  1, 14  },
 			    {2, 2, 2, 12, 1, 12},
 			    {3, 3, 3, 10, 1, 10},
@@ -196,7 +201,7 @@ workbench.defs = {
 			    {5, 10, 5, 6, 2, 6},
 			    {6, 12, 6, 4, 2, 4},
 			    {7, 14, 7, 2, 2, 2}},
-	{"Triangular_Prism",	1,  {0, 0, 0, 16, 1, 16},
+	{"Triangular_Prism",	4,  {0, 0, 0, 16, 1, 16},
 	            {0, 1, 1, 16, 1, 14},
 	            {0, 2, 2, 16, 1, 12},
 	            {0, 3, 3, 16, 1, 10},
@@ -239,18 +244,18 @@ local formspecs = {
 	-- Main formspec
 	"label[0,0;Circular Saw]"..
 	  mcl_formspec.get_itemslot_bg(1.5,1.5,1,1)..
-      mcl_formspec.get_itemslot_bg(4,0,5,4)..
+      mcl_formspec.get_itemslot_bg(4,0,6,4)..
 	  [[image[2.7,1.5;1,1;gui_furnace_arrow_bg.png^[transformR270]
 	   image[0.5,1.5;1,1;workbench_saw.png]
 	   list[context;input;1.5,1.5;1,1;]
-	   list[context;forms;4,0;5,4;] ]],
+	   list[context;forms;4,0;6,4;] ]],
 }
 
 function workbench:set_formspec(meta, id)
-	meta:set_string("formspec", "size[9,8;]"..
-	         "list[current_player;main;0,4.25;9,3;9]"..
-	         "list[current_player;main;0,7.25;9,1;]"..
-			formspecs[id]..mcl_formspec.get_itemslot_bg(0,4.25,9,4)..
+	meta:set_string("formspec", "size[10,8;]"..
+	         "list[current_player;main;0.5,4.25;9,3;9]"..
+	         "list[current_player;main;0.5,7.25;9,1;]"..
+			formspecs[id]..mcl_formspec.get_itemslot_bg(0.5,4.25,9,4)..
 			"listring[current_player;main]"..
 			"listring[context;input]"
 			)
@@ -261,7 +266,7 @@ function workbench.construct(pos)
 	local inv = meta:get_inventory()
 
 	inv:set_size("input", 1)
-	inv:set_size("forms", 5*4)
+	inv:set_size("forms", 6*4)
 
 	meta:set_string("infotext", "Circular Saw")
 	workbench:set_formspec(meta, 1)
@@ -478,93 +483,108 @@ minetest.override_item("mcl_stairs:slab_concrete_"..colour[1], {
 })
 
 minetest.override_item("mcl_colorblocks:concrete_" .. colour[1] .. "_microslab", {
-	_mcl_blast_resistance = 0.5,
-	_mcl_hardness = 0.5,
+	_mcl_blast_resistance = 1.8,
+	_mcl_hardness = 1.8,
+})
+
+minetest.override_item("mcl_colorblocks:concrete_" .. colour[1] .. "_slab_corner", {
+	_mcl_blast_resistance = 1.8,
+	_mcl_hardness = 1.8,
 })
 
 minetest.override_item("mcl_colorblocks:concrete_" .. colour[1] .. "_nanoslab", {
-	_mcl_blast_resistance = 0.5,
-	_mcl_hardness = 0.5,
+	_mcl_blast_resistance = 1.8,
+	_mcl_hardness = 1.8,
+})
+
+minetest.override_item("mcl_colorblocks:concrete_" .. colour[1] .. "_nanoslab_center", {
+	_mcl_blast_resistance = 1.8,
+	_mcl_hardness = 1.8,
 })
 
 minetest.override_item("mcl_colorblocks:concrete_" .. colour[1] .. "_micropanel", {
-	_mcl_blast_resistance = 0.5,
-	_mcl_hardness = 0.5,
+	_mcl_blast_resistance = 1.8,
+	_mcl_hardness = 1.8,
 })
 
 minetest.override_item("mcl_colorblocks:concrete_" .. colour[1] .. "_thinstair", {
-	_mcl_blast_resistance = 0.5,
-	_mcl_hardness = 0.5,
+	_mcl_blast_resistance = 1.8,
+	_mcl_hardness = 1.8,
 })
 
 minetest.override_item("mcl_colorblocks:concrete_" .. colour[1] .. "_cube", {
-	_mcl_blast_resistance = 0.5,
-	_mcl_hardness = 0.5,
+	_mcl_blast_resistance = 1.8,
+	_mcl_hardness = 1.8,
 })
 
 minetest.override_item("mcl_colorblocks:concrete_" .. colour[1] .. "_panel", {
-	_mcl_blast_resistance = 0.5,
-	_mcl_hardness = 0.5,
+	_mcl_blast_resistance = 1.8,
+	_mcl_hardness = 1.8,
+})
+
+minetest.override_item("mcl_colorblocks:concrete_" .. colour[1] .. "_pole", {
+	_mcl_blast_resistance = 1.8,
+	_mcl_hardness = 1.8,
 })
 
 minetest.override_item("mcl_colorblocks:concrete_" .. colour[1] .. "_halfslope2", {
-	_mcl_blast_resistance = 0.5,
-	_mcl_hardness = 0.5,
+	_mcl_blast_resistance = 1.8,
+	_mcl_hardness = 1.8,
 })
 
 minetest.override_item("mcl_colorblocks:concrete_" .. colour[1] .. "_slope", {
-	_mcl_blast_resistance = 0.5,
-	_mcl_hardness = 0.5,
+	_mcl_blast_resistance = 1.8,
+	_mcl_hardness = 1.8,
 })
 
 minetest.override_item("mcl_colorblocks:concrete_" .. colour[1] .. "_halfslope", {
-	_mcl_blast_resistance = 0.5,
-	_mcl_hardness = 0.5,
+	_mcl_blast_resistance = 1.8,
+	_mcl_hardness = 1.8,
 })
 
 minetest.override_item("mcl_colorblocks:concrete_" .. colour[1] .. "_halfslope_outercorner", {
-	_mcl_blast_resistance = 0.5,
-	_mcl_hardness = 0.5,
+	_mcl_blast_resistance = 1.8,
+	_mcl_hardness = 1.8,
 })
 
 minetest.override_item("mcl_colorblocks:concrete_" .. colour[1] .. "_halfslope_innercorner", {
-	_mcl_blast_resistance = 0.5,
-	_mcl_hardness = 0.5,
+	_mcl_blast_resistance = 1.8,
+	_mcl_hardness = 1.8,
 })
 
 minetest.override_item("mcl_colorblocks:concrete_" .. colour[1] .. "_halfslope2_outercorner", {
-	_mcl_blast_resistance = 0.5,
-	_mcl_hardness = 0.5,
+	_mcl_blast_resistance = 1.8,
+	_mcl_hardness = 1.8,
 })
 
 minetest.override_item("mcl_colorblocks:concrete_" .. colour[1] .. "_halfslope2_innercorner", {
-	_mcl_blast_resistance = 0.5,
-	_mcl_hardness = 0.5,
+	_mcl_blast_resistance = 1.8,
+	_mcl_hardness = 1.8,
 })
 
 minetest.override_item("mcl_colorblocks:concrete_" .. colour[1] .. "_slope_innercorner", {
-	_mcl_blast_resistance = 0.5,
-	_mcl_hardness = 0.5,
+	_mcl_blast_resistance = 1.8,
+	_mcl_hardness = 1.8,
 })
 
 minetest.override_item("mcl_colorblocks:concrete_" .. colour[1] .. "_slope_outercorner", {
-	_mcl_blast_resistance = 0.5,
-	_mcl_hardness = 0.5,
+	_mcl_blast_resistance = 1.8,
+	_mcl_hardness = 1.8,
 })
 
 minetest.override_item("mcl_colorblocks:concrete_" .. colour[1] .. "_pyramid", {
-	_mcl_blast_resistance = 0.5,
-	_mcl_hardness = 0.5,
+	_mcl_blast_resistance = 1.8,
+	_mcl_hardness = 1.8,
 })
 
 minetest.override_item("mcl_colorblocks:concrete_" .. colour[1] .. "_spike", {
-	_mcl_blast_resistance = 0.5,
-	_mcl_hardness = 0.5,
+	_mcl_blast_resistance = 1.8,
+	_mcl_hardness = 1.8,
 })
 
 minetest.override_item("mcl_colorblocks:concrete_" .. colour[1] .. "_Triangular_Prism", {
-	_mcl_blast_resistance = 0.5,
-	_mcl_hardness = 0.5,
+	_mcl_blast_resistance = 1.8,
+	_mcl_hardness = 1.8,
 })
 --
 -- Glass
@@ -586,7 +606,23 @@ minetest.override_item("mcl_core:glass_" .. colour[4] .. "_microslab", {
 	_mcl_hardness = 0.3,
 })
 
+minetest.override_item("mcl_core:glass_" .. colour[4] .. "_slab_corner", {
+	use_texture_alpha = true,
+	tiles = {"coloured_glass_" .. colour[1] .. ".png"},
+	sunlight_propagates = true,
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
+})
+
 minetest.override_item("mcl_core:glass_" .. colour[4] .. "_nanoslab", {
+	use_texture_alpha = true,
+	tiles = {"coloured_glass_" .. colour[1] .. ".png"},
+	sunlight_propagates = true,
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
+})
+
+minetest.override_item("mcl_core:glass_" .. colour[4] .. "_nanoslab_center", {
 	use_texture_alpha = true,
 	tiles = {"coloured_glass_" .. colour[1] .. ".png"},
 	sunlight_propagates = true,
@@ -619,6 +655,14 @@ minetest.override_item("mcl_core:glass_" .. colour[4] .. "_cube", {
 })
 
 minetest.override_item("mcl_core:glass_" .. colour[4] .. "_panel", {
+	use_texture_alpha = true,
+    sunlight_propagates = true,
+	tiles = {"coloured_glass_" .. colour[1] .. ".png"},
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
+})
+
+minetest.override_item("mcl_core:glass_" .. colour[4] .. "_pole", {
 	use_texture_alpha = true,
     sunlight_propagates = true,
 	tiles = {"coloured_glass_" .. colour[1] .. ".png"},
@@ -746,7 +790,23 @@ minetest.override_item("mcl_core:glass_microslab", {
 	_mcl_hardness = 0.3,
 })
 
+minetest.override_item("mcl_core:glass_slab_corner", {
+	use_texture_alpha = true,
+	tiles = {"coloured_glass_clear_framed.png"},
+	sunlight_propagates = true,
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
+})
+
 minetest.override_item("mcl_core:glass_nanoslab", {
+	use_texture_alpha = true,
+	tiles = {"coloured_glass_clear_framed.png"},
+	sunlight_propagates = true,
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
+})
+
+minetest.override_item("mcl_core:glass_nanoslab_center", {
 	use_texture_alpha = true,
 	tiles = {"coloured_glass_clear_framed.png"},
 	sunlight_propagates = true,
@@ -779,6 +839,14 @@ minetest.override_item("mcl_core:glass_cube", {
 })
 
 minetest.override_item("mcl_core:glass_panel", {
+	use_texture_alpha = true,
+	tiles = {"coloured_glass_clear_framed.png"},
+	sunlight_propagates = true,
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
+})
+
+minetest.override_item("mcl_core:glass_pole", {
 	use_texture_alpha = true,
 	tiles = {"coloured_glass_clear_framed.png"},
 	sunlight_propagates = true,
