@@ -475,11 +475,13 @@ for _, colour in pairs(colour) do
 --
 
 minetest.override_item("mcl_stairs:stair_concrete_"..colour[1], {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
+	_mcl_blast_resistance = 1.8,
+	_mcl_hardness = 1.8,
 })
 
 minetest.override_item("mcl_stairs:slab_concrete_"..colour[1], {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
+	_mcl_blast_resistance = 1.8,
+	_mcl_hardness = 1.8,
 })
 
 minetest.override_item("mcl_colorblocks:concrete_" .. colour[1] .. "_microslab", {
