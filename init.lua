@@ -1,12 +1,11 @@
 local modpath = minetest.get_modpath("mcl_circularsaw").. DIR_DELIM
 
-local workbench = {}
-WB = {}
+local circularsaw = {}
+CS = {}
 screwdriver = screwdriver or {}
 local min, ceil = math.min, math.ceil
 
--- Nodes allowed to be cut
--- Only the regular, solid blocks without metas or explosivity can be cut
+-- All Nodes allowed to be cut
 local nodes = {}
 for node, def in pairs(minetest.registered_nodes) do
 	if (def.drawtype == "normal" or def.drawtype:sub(1,5) == "glass") and
@@ -27,11 +26,6 @@ for node, def in pairs(minetest.registered_nodes) do
 	end
 end
 
--- Optionally, you can register custom cuttable nodes in the circular saw
-WB.custom_nodes_register = {
-
-}
-
 setmetatable(nodes, {
 	__concat = function(t1, t2)
 		for i=1, #t2 do
@@ -41,10 +35,10 @@ setmetatable(nodes, {
 	end
 })
 
-nodes = nodes..WB.custom_nodes_register
+nodes = nodes..CS
 
 -- Nodeboxes definitions
-workbench.defs = {
+circularsaw.defs = {
 	-- Name       Yield   X  Y   Z  W   H  L
 	{"nanoslab",	16, { 0, 0,  0, 8,  1, 8  }},
 	{"micropanel",	16, { 0, 0,  0, 16, 1, 8  }},
@@ -256,7 +250,7 @@ workbench.defs = {
 	            {0, 7, 7, 16, 1, 2}},
 }
 
-function workbench:get_output(inv, input, name)
+function circularsaw:get_output(inv, input, name)
 	local output = {}
 	for _, n in pairs(self.defs) do
 		local count = min(n[2] * input:get_count(), input:get_stack_max())
@@ -268,10 +262,9 @@ function workbench:get_output(inv, input, name)
 end
 
 -- Thanks to kaeza for this function
-function workbench:pixelbox(size, boxes)
+function circularsaw:pixelbox(size, boxes)
 	local fixed = {}
 	for _, box in pairs(boxes) do
-		-- `unpack` has been changed to `table.unpack` in newest Lua versions
 		local x, y, z, w, h, l = unpack(box)
 		fixed[#fixed+1] = {
 			(x / size) - 0.5,
@@ -296,7 +289,8 @@ local formspecs = {
 	   list[context;forms;3,0;7,4;] ]],
 }
 
-function workbench:set_formspec(meta, id)
+    -- Player Inventory
+function circularsaw:set_formspec(meta, id)
 	meta:set_string("formspec", "size[10,8;]"..
 	         "list[current_player;main;0.5,4.25;9,3;9]"..
 	         "list[current_player;main;0.5,7.25;9,1;]"..
@@ -306,7 +300,11 @@ function workbench:set_formspec(meta, id)
 			)
 end
 
-function workbench.construct(pos)
+--------------------------------------------------------
+------------------ Functions ---------------------------
+--------------------------------------------------------
+
+function circularsaw.construct(pos)
 	local meta = minetest.get_meta(pos)
 	local inv = meta:get_inventory()
 
@@ -314,19 +312,19 @@ function workbench.construct(pos)
 	inv:set_size("forms", 7*4)
 
 	meta:set_string("infotext", "Circular Saw")
-	workbench:set_formspec(meta, 1)
+	circularsaw:set_formspec(meta, 1)
 end
 
-function workbench.fields(pos, _, fields)
+function circularsaw.fields(pos, _, fields)
 	local meta = minetest.get_meta(pos)
 end
 
-function workbench.dig(pos)
+function circularsaw.dig(pos)
 	local inv = minetest.get_meta(pos):get_inventory()
 	return inv:is_empty("input")
 end
 
-function workbench.put(_, listname, _, stack)
+function circularsaw.put(_, listname, _, stack)
 	local stackname = stack:get_name()
 	if(listname == "input" and minetest.registered_nodes[stackname.."_cube"]) then
 		return stack:get_count()
@@ -334,15 +332,15 @@ function workbench.put(_, listname, _, stack)
 	return 0
 end
 
-function workbench.on_put(pos, listname, _, stack)
+function circularsaw.on_put(pos, listname, _, stack)
 	local inv = minetest.get_meta(pos):get_inventory()
 	if listname == "input" then
 		local input = inv:get_stack("input", 1)
-		workbench:get_output(inv, input, stack:get_name())
+		circularsaw:get_output(inv, input, stack:get_name())
 end
 end
 
-function workbench.on_take(pos, listname, index, stack, player)
+function circularsaw.on_take(pos, listname, index, stack, player)
 	local inv = minetest.get_meta(pos):get_inventory()
 	local input = inv:get_stack("input", 1)
 	local inputname = input:get_name()
@@ -350,7 +348,7 @@ function workbench.on_take(pos, listname, index, stack, player)
 
 	if listname == "input" then
 		if stackname == inputname then
-			workbench:get_output(inv, input, stackname)
+			circularsaw:get_output(inv, input, stackname)
 		else
 			inv:set_list("forms", {})
 		end
@@ -363,11 +361,15 @@ function workbench.on_take(pos, listname, index, stack, player)
 			end
 		end
 
-		input:take_item(ceil(stack:get_count() / workbench.defs[index][2]))
+		input:take_item(ceil(stack:get_count() / circularsaw.defs[index][2]))
 		inv:set_stack("input", 1, input)
-		workbench:get_output(inv, input, inputname)
+		circularsaw:get_output(inv, input, inputname)
 	end
 end
+
+---------------------------------------------------------------------------
+------------------------- Register Circular Saw ---------------------------
+---------------------------------------------------------------------------
 
 minetest.register_node("mcl_circularsaw:circularsaw", {
 	description = "Circular Saw",
@@ -396,14 +398,14 @@ minetest.register_node("mcl_circularsaw:circularsaw", {
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	_mcl_blast_resistance = 6,
 	_mcl_hardness = 1.5,
-	can_dig = workbench.dig,
-	on_timer = workbench.timer,
-	on_construct = workbench.construct,
-	on_receive_fields = workbench.fields,
-	on_metadata_inventory_put = workbench.on_put,
-	on_metadata_inventory_take = workbench.on_take,
-	allow_metadata_inventory_put = workbench.put,
-	allow_metadata_inventory_move = workbench.move
+	can_dig = circularsaw.dig,
+	on_timer = circularsaw.timer,
+	on_construct = circularsaw.construct,
+	on_receive_fields = circularsaw.fields,
+	on_metadata_inventory_put = circularsaw.on_put,
+	on_metadata_inventory_take = circularsaw.on_take,
+	allow_metadata_inventory_put = circularsaw.put,
+	allow_metadata_inventory_move = circularsaw.move
 })
 
 minetest.register_craft({
@@ -415,7 +417,7 @@ minetest.register_craft({
 	}
 })
 
-for _, d in pairs(workbench.defs) do
+for _, d in pairs(circularsaw.defs) do
 for i=1, #nodes do
 	local node = nodes[i]
 	local def = minetest.registered_nodes[node]
@@ -463,8 +465,7 @@ for i=1, #nodes do
 			groups = groups,
 			_mcl_blast_resistance = def._mcl_blast_resistance,
 		    _mcl_hardness = def._mcl_hardness,
-			-- `unpack` has been changed to `table.unpack` in newest Lua versions.
-			node_box = workbench:pixelbox(16, {unpack(d, 3)}),
+			node_box = circularsaw:pixelbox(16, {unpack(d, 3)}),
 			sunlight_propagates = true,
 			on_place = minetest.rotate_node
 		})
@@ -480,8 +481,7 @@ for i=1, #nodes do
 			groups = groups,
 			_mcl_blast_resistance = def._mcl_blast_resistance,
 		    _mcl_hardness = def._mcl_hardness,
-			-- `unpack` has been changed to `table.unpack` in newest Lua versions.
-			node_box = workbench:pixelbox(16, {unpack(d, 3)}),
+			node_box = circularsaw:pixelbox(16, {unpack(d, 3)}),
 			sunlight_propagates = true,
 			on_place = minetest.rotate_node
 		})
