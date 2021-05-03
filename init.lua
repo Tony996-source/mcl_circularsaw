@@ -51,6 +51,7 @@ circularsaw.defs = {
 	{"panel",	4,  { 0, 0,  0, 16, 8, 8  }},
 	{"pole",    4,  { 4, 0, 4, 8, 16, 8}},
 	{"slab", 	2,  nil			  },
+	{"halfslab", 4, {0, 0, 0, 16, 4, 16}},
 	{"stair",	1,  nil			  },
 	{"halfslope",	2,  { 0, 0,  0, 16, 1, 16 },
 			    { 0, 1,  2, 16, 1, 14  },
@@ -539,6 +540,7 @@ local shape = {
 	{"pyramid",                    "pyramid"},
 	{"spike",                      "spike"},
 	{"triangular_prism",           "Triangular Prism"},
+	{"halfslab",                   "Half Slab"},
 }
 
 for _, colour in pairs(colour) do
@@ -549,11 +551,13 @@ for _, shape in pairs(shape) do
 ----------------------------------------------------------------------
 
 minetest.override_item("mcl_stairs:stair_concrete_"..colour[1], {
+    groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
 	_mcl_blast_resistance = 1.8,
 	_mcl_hardness = 1.8,
 })
 
 minetest.override_item("mcl_stairs:slab_concrete_"..colour[1], {
+    groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
 	_mcl_blast_resistance = 1.8,
 	_mcl_hardness = 1.8,
 })
@@ -621,403 +625,79 @@ minetest.override_item("mcl_core:glass_"..shape[1], {
 end
 end
 
-----------------------------------------------------------------
-------------------------- Stone --------------------------------
-----------------------------------------------------------------
-
-minetest.override_item("mcl_stairs:slab_stone_rough", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:stair_stone_rough", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:stair_andesite", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:slab_andesite", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:stair_granite", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:slab_granite", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:stair_diorite", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:slab_diorite", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:stair_cobble", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:slab_cobble", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:slab_mossycobble", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:stair_mossycobble", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:slab_brick_block", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:stair_brick_block", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:slab_sandstone", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:stair_sandstone", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:slab_sandstonesmooth2", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:stair_sandstonesmooth2", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:slab_redsandstone", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:stair_redsandstone", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:stair_redsandstonesmooth2", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:slab_redsandstonesmooth2", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:stair_stonebrick", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:slab_stonebrick", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:stair_quartzblock", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:slab_quartzblock", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:stair_quartz_smooth", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:slab_quartz_smooth", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:stair_nether_brick", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:slab_nether_brick", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:stair_red_nether_brick", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:slab_red_nether_brick", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:stair_end_bricks", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:slab_end_bricks", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:stair_purpur_block", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:slab_purpur_block", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:stair_prismarine", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:slab_prismarine", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:stair_prismarine_brick", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:slab_prismarine_brick", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:stair_prismarine_dark", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:slab_prismarine_dark", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:stair_andesite_smooth", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:slab_andesite_smooth", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:stair_granite_smooth", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:slab_granite_smooth", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:stair_diorite_smooth", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:slab_diorite_smooth", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:stair_stonebrickmossy", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:slab_stonebrickmossy", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:slab_lapisblock", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:stair_lapisblock", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:stair_goldblock", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:slab_goldblock", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:stair_ironblock", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:slab_ironblock", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:stair_stonebrickcracked", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:slab_stonebrickcracked", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:stair_cracked_stone", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:slab_cracked_stone", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-----------------------------------------------------------------------
-------------------------- Trees --------------------------------------
-----------------------------------------------------------------------
-
-minetest.override_item("mcl_stairs:stair_tree", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:stair_jungletree", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:stair_acaciatree", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:stair_sprucetree", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:stair_birchtree", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:stair_darktree", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:slab_tree", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:slab_jungletree", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:slab_acaciatree", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:slab_sprucetree", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:slab_birchtree", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:slab_darktree", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
------------------------------------------------------------------------
--------------------------- Planks -------------------------------------
------------------------------------------------------------------------
-
-minetest.override_item("mcl_stairs:stair_wood", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:stair_junglewood", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:stair_acaciawood", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:stair_sprucewood", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:stair_birchwood", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:stair_darkwood", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:slab_wood", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:slab_junglewood", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:slab_acaciawood", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:slab_sprucewood", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:slab_birchwood", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:slab_darkwood", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-----------------------------------------------------------------------
------------------------- Tree Bark -----------------------------------
-----------------------------------------------------------------------
-
-
-minetest.override_item("mcl_stairs:stair_tree_bark", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:stair_jungletree_bark", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:stair_acaciatree_bark", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:stair_sprucetree_bark", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:stair_birchtree_bark", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:stair_darktree_bark", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:slab_tree_bark", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:slab_jungletree_bark", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:slab_acaciatree_bark", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:slab_sprucetree_bark", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:slab_birchtree_bark", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:slab_darktree_bark", {
-	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
+-----------------------------------------------------------------
+------------------- Hide items from inventory -------------------
+-----------------------------------------------------------------
+
+local material = {
+----- Stone ------------------------- Description -----
+
+	{"stone_rough",                  "Rough Stone"},
+	{"andesite",                     "Andesite"},
+	{"granite",                      "Granite"},
+	{"diorite",                      "Diorite"},
+	{"cobble",                       "Cobble"},
+	{"mossycobble",                  "Mossy Cobble"},
+	{"brick_block",                  "Brick Block"},
+	{"sandstone",                    "Sand Stone"},
+	{"sandstonesmooth2",             "Smooth Sand Stone"},
+	{"redsandstone",                 "Red Sand Stone"},
+	{"redsandstonesmooth2",          "Smooth Red Sand Stone"},
+	{"stonebrick",                   "Stone Brick"},
+	{"quartzblock",                  "Quartz Block"},
+	{"quartz_smooth",                "Quartz Bmooth"},
+	{"nether_brick",                 "Nether Brick"},
+	{"red_nether_brick",             "Red Nether Brick"},
+	{"end_bricks",                   "End Bricks"},
+	{"purpur_block",                 "Purpur Block"},
+	{"prismarine",                   "Prismarine"},
+	{"prismarine_brick",             "Prismarine Brick"},
+	{"prismarine_dark",              "Prismarine Dark"},
+	{"andesite_smooth",              "Smooth Andesite"},
+	{"granite_smooth",               "Smooth Granite"},
+	{"diorite_smooth",               "Smooth Giorite"},
+	{"stonebrickmossy",              "Mossy Stone Brick"},
+	{"lapisblock",                   "Lapis Block"},
+	{"goldblock",                    "Gold Block"},
+	{"ironblock",                    "Iron Block"},
+	{"stonebrickcracked",            "Stone Brick Cracked"},
+	{"cracked_stone",                "Cracked Stone"},
+
+----- Tree -------------------------- Description -----
+
+	{"tree",                         "Oak Tree"},
+	{"jungletree",                   "Jungle Tree"},
+	{"acaciatree",                   "Acacia Tree"},
+	{"sprucetree",                   "Spruce Tree"},
+	{"birchtree",                    "Birch Tree"},
+	{"darktree",                     "Dark Oak Tree"},
+
+----- Planks ------------------------ Description -----
+
+	{"wood",                         "Oak Planks"},
+	{"junglewood",                   "Jungle Planks"},
+	{"acaciawood",                   "Acacia Planks"},
+	{"sprucewood",                   "Spruce Planks"},
+	{"birchwood",                    "Birch Planks"},
+	{"darkwood",                     "Dark Oak Planks"},
+
+----- Tree Bark --------------------- Description -----
+	{"tree_bark",                    "Oak Tree Bark"},
+	{"jungletree_bark",              "Jungle Tree Bark"},
+	{"acaciatree_bark",              "Acacia Tree Bark"},
+	{"sprucetree_bark",              "Spruce Tree Bark"},
+	{"birchtree_bark",               "Birch Tree Bark"},
+	{"darktree_bark",                "Dark Oak Tree Bark"},
+}
+
+for _, material in pairs(material) do
+
+minetest.override_item("mcl_stairs:slab_"..material[1], {
+	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
+})
+
+minetest.override_item("mcl_stairs:stair_"..material[1], {
+	groups = {not_in_creative_inventory = 1, not_in_craft_guide = 1},
+})
+
+end
