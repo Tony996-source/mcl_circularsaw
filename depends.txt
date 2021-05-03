@@ -3,6 +3,7 @@ mcl_nether?
 mcl_end?
 mcl_colorblocks?
 mcl_ocean?
+mcl_blackstone?
 mcl_stairs?
 mcl_formspecs?
 mcl_craftguide?

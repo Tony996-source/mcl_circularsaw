@@ -42,16 +42,17 @@ circularsaw.defs = {
 	-- Name       Yield   X  Y   Z  W   H  L
 	{"nanoslab",	16, { 0, 0,  0, 8,  1, 8  }},
 	{"micropanel",	16, { 0, 0,  0, 16, 1, 8  }},
-	{"microslab",	8,  { 0, 0,  0, 16, 1, 16 }},
-	{"slab_corner", 2,  { 0, 0, 0, 16, 1, 16},
-	            { 0, 0, 15, 16, 16, 1}},
-	{"thinstair",	8,  { 0, 7,  0, 16, 1, 8  },
-			    { 0, 15, 8, 16, 1, 8  }},
 	{"cube", 4, {4, 0, 4, 8, 8, 8}},
 	{"panel",	4,  { 0, 0,  0, 16, 8, 8  }},
 	{"pole",    4,  { 4, 0, 4, 8, 16, 8}},
-	{"slab", 	2,  nil			  },
+	{"slab_corner", 2,  { 0, 0, 0, 16, 1, 16},
+	            { 0, 0, 15, 16, 16, 1}},
+	{"microslab",	8,  { 0, 0,  0, 16, 1, 16 }},
 	{"halfslab", 4, {0, 0, 0, 16, 4, 16}},
+	{"slab", 	2,  nil			  },
+	{"three_quarter_slab", 1, {0, 0, 0, 16, 12, 16}},
+	{"thinstair",	8,  { 0, 7,  0, 16, 1, 8  },
+			    { 0, 15, 8, 16, 1, 8  }},
 	{"stair",	1,  nil			  },
 	{"halfslope",	2,  { 0, 0,  0, 16, 1, 16 },
 			    { 0, 1,  2, 16, 1, 14  },
@@ -541,6 +542,7 @@ local shape = {
 	{"spike",                      "spike"},
 	{"triangular_prism",           "Triangular Prism"},
 	{"halfslab",                   "Half Slab"},
+	{"three_quarter_slab",         "Three Quarter Slab"},
 }
 
 for _, colour in pairs(colour) do
