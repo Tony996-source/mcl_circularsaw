@@ -280,6 +280,15 @@ circularsaw.defs = {
 	                        {0, 6, 6, 16, 1, 4},
 	                        {0, 7, 7, 16, 1, 2}},
 
+	{"triangular_prism_1", 4, {0, 0, 0, 16, 2, 16},
+	                          {0, 2, 1, 16, 2, 14},
+	                          {0, 4, 2, 16, 2, 12},
+	                          {0, 6, 3, 16, 2, 10},
+	                          {0, 8, 4, 16, 2, 8},
+	                          {0, 10, 5, 16, 2, 6},
+	                          {0, 12, 6, 16, 2, 4},
+	                          {0, 14, 7, 16, 2, 2}},
+
 	{"pillar", 1, {0, 0, 0, 16, 1, 16},
 	              {2, 1, 2, 12, 2, 12},
 	              {3, 3, 3, 10, 2, 10},
@@ -589,6 +598,7 @@ local shape = {
 	{"thickslab",                  "Thick Slab"},
 	{"pillar",                     "pillar"},
 	{"hourglass",                  "hourglass"},
+	{"triangular_prism_1",         "triangular_prism_1"},
 }
 
 for _, colour in pairs(colour) do
