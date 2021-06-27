@@ -524,6 +524,7 @@ for i=1, #nodes do
 			on_place = minetest.rotate_node
 		})
 		
+if minetest.get_modpath("technic") then
 		minetest.register_node(":technic:cracked_stone_"..d[1], {
 			description = def.description.." "..d[1]:gsub("^%l", string.upper),
 			stack_max = 64,
@@ -539,6 +540,7 @@ for i=1, #nodes do
 			sunlight_propagates = true,
 			on_place = minetest.rotate_node
 		})
+end
 end
 end
 end
@@ -714,7 +716,6 @@ local stone = {
 	{"diorite_smooth",               "Smooth Giorite"},
 	{"stonebrickmossy",              "Mossy Stone Brick"},
 	{"stonebrickcracked",            "Stone Brick Cracked"},
-	{"cracked_stone",                "Cracked Stone"},
 }
 
 local wood = {
@@ -784,3 +785,13 @@ minetest.override_item("mcl_stairs:stair_ironblock", {
 minetest.override_item("mcl_stairs:slab_ironblock", {
 	groups = {pickaxey=2, not_in_creative_inventory = 1, not_in_craft_guide = 1},
 })
+
+if minetest.get_modpath("technic") then
+minetest.override_item("mcl_stairs:slab_cracked_stone", {
+	groups = {pickaxey=1, material_stone=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
+})
+
+minetest.override_item("mcl_stairs:stair_cracked_stone", {
+	groups = {pickaxey=1, material_stone=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
+})
+end
