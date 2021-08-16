@@ -762,29 +762,23 @@ minetest.override_item("mcl_stairs:stair_"..wood[1], {
 end
 end
 
-minetest.override_item("mcl_stairs:stair_lapisblock", {
+local misc = {
+	{"lapisblock", "lapisblock"},
+	{"goldblock",  "goldblock"},
+	{"ironblock",  "ironblock"}
+}
+
+for _, misc in pairs(misc) do
+
+minetest.override_item("mcl_stairs:stair_"..misc[1], {
 	groups = {pickaxey=3, not_in_creative_inventory = 1, not_in_craft_guide = 1},
 })
 
-minetest.override_item("mcl_stairs:slab_lapisblock", {
+minetest.override_item("mcl_stairs:slab_"..misc[1], {
 	groups = {pickaxey=3, not_in_creative_inventory = 1, not_in_craft_guide = 1},
 })
 
-minetest.override_item("mcl_stairs:stair_goldblock", {
-	groups = {pickaxey=4, not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:slab_goldblock", {
-	groups = {pickaxey=4, not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:stair_ironblock", {
-	groups = {pickaxey=2, not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:slab_ironblock", {
-	groups = {pickaxey=2, not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
+end
 
 if minetest.get_modpath("technic") then
 minetest.override_item("mcl_stairs:slab_cracked_stone", {

@@ -1,1 +1,1 @@
-A mod adding a Circular Saw for Minetest subgame (MineClone2) and makes all registered MineClone2 blocks cuttable into multiple shapes.
+A mod adding a Circular Saw for Minetest subgame (MineClone5) and makes all registered MineClone5 blocks cuttable into multiple shapes.
