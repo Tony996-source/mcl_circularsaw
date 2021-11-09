@@ -9,3 +9,4 @@ mcl_formspecs?
 mcl_craftguide?
 mclx_stairs?
 mcl_technic?
+mcl_deepslate?

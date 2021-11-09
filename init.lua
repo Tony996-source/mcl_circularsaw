@@ -789,3 +789,28 @@ minetest.override_item("mcl_stairs:stair_cracked_stone", {
 	groups = {pickaxey=1, material_stone=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
 })
 end
+
+if minetest.get_modpath("mcl_deepslate") then
+
+local deepslate = {
+	{"deepslate"},
+	{"deepslate_cobbled"},
+	{"deepslate_polished"},
+	{"deepslate_bricks"},
+	{"deepslate_tiles"},
+	{"deepslate_chiseled"},
+	{"deepslate_bricks_cracked"},
+	{"deepslate_tiles_cracked"},
+}
+
+for _, deepslate in pairs(deepslate) do
+
+minetest.override_item("mcl_stairs:slab_"..deepslate[1], {
+	groups = {pickaxey=1, material_stone=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
+})
+
+minetest.override_item("mcl_stairs:stair_"..deepslate[1], {
+	groups = {pickaxey=1, material_stone=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
+})
+end
+end
