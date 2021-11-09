@@ -10,3 +10,4 @@ mcl_craftguide?
 mclx_stairs?
 mcl_technic?
 mcl_deepslate?
+mcl_copper?

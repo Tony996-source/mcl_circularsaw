@@ -818,3 +818,24 @@ minetest.override_item("mcl_stairs:stair_"..deepslate[1], {
 })
 end
 end
+
+if minetest.get_modpath("mcl_copper") then
+
+local copper = {
+	{"copper_cut"},
+	{"copper_exposed_cut"},
+	{"copper_oxidized_cut"},
+	{"copper_weathered_cut"},
+}
+
+for _, copper in pairs(copper) do
+
+minetest.override_item("mcl_stairs:slab_"..copper[1], {
+	groups = {pickaxey=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
+})
+
+minetest.override_item("mcl_stairs:stair_"..copper[1], {
+	groups = {pickaxey=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
+})
+end
+end
