@@ -716,6 +716,10 @@ local stone = {
 	{"diorite_smooth",               "Smooth Giorite"},
 	{"stonebrickmossy",              "Mossy Stone Brick"},
 	{"stonebrickcracked",            "Stone Brick Cracked"},
+	{"blackstone",                   "Blackstone"},
+	{"blackstone_polished",          "Blackstone Polished"},
+	{"blackstone_chiseled_polished", "Blackstone Chiseled Polished"},
+	{"blackstone_brick_polished",    "Blackstone Brick Polished"},
 }
 
 local wood = {
