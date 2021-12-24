@@ -524,15 +524,15 @@ for i=1, #nodes do
 			on_place = minetest.rotate_node
 		})
 		
-if minetest.get_modpath("technic") then
-		minetest.register_node(":technic:cracked_stone_"..d[1], {
+if minetest.get_modpath("mcl_technic") then
+		minetest.register_node(":mcl_technic:cracked_stone_"..d[1], {
 			description = def.description.." "..d[1]:gsub("^%l", string.upper),
 			stack_max = 64,
 			paramtype = "light",
 			paramtype2 = "facedir",
 			drawtype = "nodebox",
 			sounds = def.sounds,
-			tiles = {"technic_cracked_stone.png"},
+			tiles = {"mcl_technic_cracked_stone.png"},
 			groups = groups,
 			_mcl_blast_resistance = def._mcl_blast_resistance,
 		    _mcl_hardness = def._mcl_hardness,
@@ -784,7 +784,7 @@ minetest.override_item("mcl_stairs:slab_"..misc[1], {
 
 end
 
-if minetest.get_modpath("technic") then
+if minetest.get_modpath("mcl_technic") then
 minetest.override_item("mcl_stairs:slab_cracked_stone", {
 	groups = {pickaxey=1, material_stone=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
 })
