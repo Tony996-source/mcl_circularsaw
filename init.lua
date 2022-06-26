@@ -1,3 +1,5 @@
+mcl_stairs.register_stair_and_slab_simple("glowstone", "mcl_nether:glowstone", "Glowstone Stair", "Glowstone Slab", "Double Glowstone Slab")
+
 local modpath = minetest.get_modpath("mcl_circularsaw").. DIR_DELIM
 
 local circularsaw = {}
@@ -516,6 +518,23 @@ for i=1, #nodes do
 			drawtype = "nodebox",
 			sounds = def.sounds,
 			tiles = tiles,
+			groups = groups,
+			_mcl_blast_resistance = def._mcl_blast_resistance,
+		    _mcl_hardness = def._mcl_hardness,
+			node_box = circularsaw:pixelbox(16, {unpack(d, 3)}),
+			sunlight_propagates = true,
+			on_place = minetest.rotate_node
+		})
+		
+		minetest.register_node(":mcl_nether:glowstone_"..d[1], {
+			description = "Glowstone "..d[1]:gsub("^%l", string.upper),
+			stack_max = 64,
+			light_source = minetest.LIGHT_MAX,
+			paramtype = "light",
+			paramtype2 = "facedir",
+			drawtype = "nodebox",
+			sounds = def.sounds,
+			tiles = {"mcl_nether_glowstone.png"},
 			groups = groups,
 			_mcl_blast_resistance = def._mcl_blast_resistance,
 		    _mcl_hardness = def._mcl_hardness,
