@@ -535,7 +535,7 @@ for i=1, #nodes do
 			drawtype = "nodebox",
 			sounds = def.sounds,
 			tiles = {"mcl_nether_glowstone.png"},
-			groups = {handy=1,building_block=1, material_glass=1, not_in_creative_inventory=1, not_in_craft_guide=1},
+			groups = groups,
 			_mcl_blast_resistance = def._mcl_blast_resistance,
 		    _mcl_hardness = def._mcl_hardness,
 			node_box = circularsaw:pixelbox(16, {unpack(d, 3)}),
