@@ -1,4 +1,3 @@
-mcl_stairs.register_stair_and_slab_simple("glowstone", "mcl_nether:glowstone", "Glowstone Stair", "Glowstone Slab", "Double Glowstone Slab")
 
 local modpath = minetest.get_modpath("mcl_circularsaw").. DIR_DELIM
 
@@ -500,6 +499,16 @@ for i=1, #nodes do
 			tiles = {def.tile_images[1]}
 		end
 		
+		if minetest.registered_nodes["mcl_stairs:stair_"..node:match(":(.*)")] then
+			mcl_stairs.register_stair_and_slab(node:match(":(.*)"), node,
+			groups,
+			tiles,
+	        def.description.." Stair",
+	        def.description.." Slab",
+	        def.sounds, 2, 2,
+	        "Double "..def.description.." Slab")
+		end
+		
 		if not minetest.registered_nodes["mcl_stairs:stair_"..node:match(":(.*)")] then
 			mcl_stairs.register_stair_and_slab(node:match(":(.*)"), node,
 			groups,
@@ -510,6 +519,22 @@ for i=1, #nodes do
 	        "Double "..def.description.." Slab")
 		end
 
+            mcl_stairs.register_stair_and_slab("glowstone", "mcl_nether:glowstone",
+			groups,
+			{"mcl_nether_glowstone.png"},
+	        "Glowstone Stair",
+	        "Glowstone Slab",
+	        def.sounds, 2, 2,
+	        "Double Glowstone Slab")
+
+            mcl_stairs.register_stair_and_slab("stone_rough", "mcl_core:stone",
+			groups,
+			{"default_stone.png"},
+	        "Stone Stair",
+	        "Stone Slab",
+	        def.sounds, 2, 2,
+	        "Double Stone Slab")
+		
 		minetest.register_node(":"..node.."_"..d[1], {
 			description = def.description.." "..d[1]:gsub("^%l", string.upper),
 			stack_max = 64,
@@ -630,13 +655,11 @@ for _, shape in pairs(shape) do
 ----------------------------------------------------------------------
 
 minetest.override_item("mcl_stairs:stair_concrete_"..colour[1], {
-groups = {handy=1,pickaxey=1, concrete=1,building_block=1, material_stone=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
 	_mcl_blast_resistance = 1.8,
 	_mcl_hardness = 1.8,
 })
 
 minetest.override_item("mcl_stairs:slab_concrete_"..colour[1], {
-groups = {handy=1,pickaxey=1, concrete=1,building_block=1, material_stone=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
 	_mcl_blast_resistance = 1.8,
 	_mcl_hardness = 1.8,
 })
@@ -704,165 +727,14 @@ minetest.override_item("mcl_core:glass_"..shape[1], {
 end
 end
 
------------------------------------------------------------------
-------------------- Hide items from inventory -------------------
------------------------------------------------------------------
-
-local stone = {
-	{"stone_rough",                  "Rough Stone"},
-	{"andesite",                     "Andesite"},
-	{"granite",                      "Granite"},
-	{"diorite",                      "Diorite"},
-	{"cobble",                       "Cobble"},
-	{"mossycobble",                  "Mossy Cobble"},
-	{"brick_block",                  "Brick Block"},
-	{"sandstone",                    "Sand Stone"},
-	{"sandstonesmooth2",             "Smooth Sand Stone"},
-	{"redsandstone",                 "Red Sand Stone"},
-	{"redsandstonesmooth2",          "Smooth Red Sand Stone"},
-	{"stonebrick",                   "Stone Brick"},
-	{"quartzblock",                  "Quartz Block"},
-	{"quartz_smooth",                "Quartz Bmooth"},
-	{"nether_brick",                 "Nether Brick"},
-	{"red_nether_brick",             "Red Nether Brick"},
-	{"end_bricks",                   "End Bricks"},
-	{"purpur_block",                 "Purpur Block"},
-	{"prismarine",                   "Prismarine"},
-	{"prismarine_brick",             "Prismarine Brick"},
-	{"prismarine_dark",              "Prismarine Dark"},
-	{"andesite_smooth",              "Smooth Andesite"},
-	{"granite_smooth",               "Smooth Granite"},
-	{"diorite_smooth",               "Smooth Giorite"},
-	{"stonebrickmossy",              "Mossy Stone Brick"},
-	{"stonebrickcracked",            "Stone Brick Cracked"},
-	{"blackstone",                   "Blackstone"},
-	{"blackstone_polished",          "Blackstone Polished"},
-	{"blackstone_chiseled_polished", "Blackstone Chiseled Polished"},
-	{"blackstone_brick_polished",    "Blackstone Brick Polished"},
-}
-
-local wood = {
-	{"tree",                         "Oak Tree"},
-	{"jungletree",                   "Jungle Tree"},
-	{"acaciatree",                   "Acacia Tree"},
-	{"sprucetree",                   "Spruce Tree"},
-	{"birchtree",                    "Birch Tree"},
-	{"darktree",                     "Dark Oak Tree"},
-
-	{"wood",                         "Oak Planks"},
-	{"junglewood",                   "Jungle Planks"},
-	{"acaciawood",                   "Acacia Planks"},
-	{"sprucewood",                   "Spruce Planks"},
-	{"birchwood",                    "Birch Planks"},
-	{"darkwood",                     "Dark Oak Planks"},
-
-	{"tree_bark",                    "Oak Tree Bark"},
-	{"jungletree_bark",              "Jungle Tree Bark"},
-	{"acaciatree_bark",              "Acacia Tree Bark"},
-	{"sprucetree_bark",              "Spruce Tree Bark"},
-	{"birchtree_bark",               "Birch Tree Bark"},
-	{"darktree_bark",                "Dark Oak Tree Bark"},
-}
-
-for _, stone in pairs(stone) do
-for _, wood in pairs(wood) do
-
-minetest.override_item("mcl_stairs:slab_"..stone[1], {
-	groups = {pickaxey=1, material_stone=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:stair_"..stone[1], {
-	groups = {pickaxey=1, material_stone=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:slab_"..wood[1], {
-	groups = {handy=1,axey=1, flammable=3, wood_slab=1, material_wood=1, fire_encouragement=5, fire_flammability=5, not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:stair_"..wood[1], {
-	groups = {handy=1,axey=1, flammable=3, wood_stairs=1, material_wood=1, fire_encouragement=5, fire_flammability=5, not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-end
-end
-
-local misc = {
-	{"lapisblock", "lapisblock"},
-	{"goldblock",  "goldblock"},
-	{"ironblock",  "ironblock"}
-}
-
-for _, misc in pairs(misc) do
-
-minetest.override_item("mcl_stairs:stair_"..misc[1], {
-	groups = {pickaxey=3, not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:slab_"..misc[1], {
-	groups = {pickaxey=3, not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-end
-
-if minetest.get_modpath("mcl_technic") then
-minetest.override_item("mcl_stairs:slab_cracked_stone", {
-	groups = {pickaxey=1, material_stone=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:stair_cracked_stone", {
-	groups = {pickaxey=1, material_stone=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-end
-
-if minetest.get_modpath("mcl_deepslate") then
-
-local deepslate = {
-	{"deepslate"},
-	{"deepslate_cobbled"},
-	{"deepslate_polished"},
-	{"deepslate_bricks"},
-	{"deepslate_tiles"},
-	{"deepslate_chiseled"},
-	{"deepslate_bricks_cracked"},
-	{"deepslate_tiles_cracked"},
-}
-
-for _, deepslate in pairs(deepslate) do
-
-minetest.override_item("mcl_stairs:slab_"..deepslate[1], {
-	groups = {pickaxey=1, material_stone=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:stair_"..deepslate[1], {
-	groups = {pickaxey=1, material_stone=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-end
-end
-
-if minetest.get_modpath("mcl_copper") then
-
-local copper = {
-	{"copper_cut"},
-	{"copper_exposed_cut"},
-	{"copper_oxidized_cut"},
-	{"copper_weathered_cut"},
-}
-
-for _, copper in pairs(copper) do
-
-minetest.override_item("mcl_stairs:slab_"..copper[1], {
-	groups = {pickaxey=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-
-minetest.override_item("mcl_stairs:stair_"..copper[1], {
-	groups = {pickaxey=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
-})
-end
-end
-
 minetest.override_item("mcl_stairs:slab_glowstone", {
-	groups = {handy=1,building_block=1, material_glass=1, not_in_creative_inventory=1, not_in_craft_guide=1},
+    light_source = minetest.LIGHT_MAX,
+    _mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
 })
 
 minetest.override_item("mcl_stairs:stair_glowstone", {
-	groups = {handy=1,building_block=1, material_glass=1, not_in_creative_inventory=1, not_in_craft_guide=1},
+    light_source = minetest.LIGHT_MAX,
+    _mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
 })

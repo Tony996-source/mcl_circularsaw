@@ -1,13 +1,13 @@
 mcl_core
+mcl_stairs
+mclx_stairs
 mcl_nether?
 mcl_end?
 mcl_colorblocks?
 mcl_ocean?
 mcl_blackstone?
-mcl_stairs?
 mcl_formspecs?
 mcl_craftguide?
-mclx_stairs?
 mcl_technic?
 mcl_deepslate?
 mcl_copper?
