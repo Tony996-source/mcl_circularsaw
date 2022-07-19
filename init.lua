@@ -680,6 +680,22 @@ minetest.override_item("mcl_stairs:stair_glass_"..colour[4], {
 	_mcl_hardness = 0.3,
 })
 
+minetest.override_item("mcl_stairs:stair_glass_"..colour[4].."_inner", {
+	tiles = {"coloured_glass_" .. colour[1] .. ".png"},
+	use_texture_alpha = true,
+	sunlight_propagates = true,
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
+})
+
+minetest.override_item("mcl_stairs:stair_glass_"..colour[4].."_outer", {
+	tiles = {"coloured_glass_" .. colour[1] .. ".png"},
+	use_texture_alpha = true,
+	sunlight_propagates = true,
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
+})
+
 minetest.override_item("mcl_stairs:slab_glass_"..colour[4], {
 	use_texture_alpha = true,
 	tiles = {"coloured_glass_" .. colour[1] .. ".png"},
@@ -716,7 +732,31 @@ minetest.override_item("mcl_stairs:stair_glass", {
 	_mcl_hardness = 0.3,
 })
 
+minetest.override_item("mcl_stairs:stair_glass_inner", {
+	use_texture_alpha = true,
+	tiles = {"coloured_glass_clear_framed.png"},
+	sunlight_propagates = true,
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
+})
+
+minetest.override_item("mcl_stairs:stair_glass_outer", {
+	use_texture_alpha = true,
+	tiles = {"coloured_glass_clear_framed.png"},
+	sunlight_propagates = true,
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
+})
+
 minetest.override_item("mcl_stairs:slab_glass", {
+	use_texture_alpha = true,
+	tiles = {"coloured_glass_clear_framed.png"},
+	sunlight_propagates = true,
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
+})
+
+minetest.override_item("mcl_stairs:slab_glass_top", {
 	use_texture_alpha = true,
 	tiles = {"coloured_glass_clear_framed.png"},
 	sunlight_propagates = true,
@@ -732,8 +772,10 @@ minetest.override_item("mcl_core:glass_"..shape[1], {
 	_mcl_hardness = 0.3,
 })
 
+
 end
 end
+
 
 minetest.override_item("mcl_stairs:slab_glowstone", {
     light_source = minetest.LIGHT_MAX,
