@@ -688,6 +688,14 @@ minetest.override_item("mcl_stairs:slab_glass_"..colour[4], {
 	_mcl_hardness = 0.3,
 })
 
+minetest.override_item("mcl_stairs:slab_glass_"..colour[4].."_top", {
+	use_texture_alpha = true,
+	tiles = {"coloured_glass_" .. colour[1] .. ".png"},
+	sunlight_propagates = true,
+	_mcl_blast_resistance = 0.3,
+	_mcl_hardness = 0.3,
+})
+
 minetest.override_item("mcl_core:glass_" .. colour[4] .. "_"..shape[1], {
 	use_texture_alpha = true,
 	tiles = {"coloured_glass_" .. colour[1] .. ".png"},
