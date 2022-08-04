@@ -534,14 +534,6 @@ for i=1, #nodes do
 	        "Stone Slab",
 	        def.sounds, 2, 2,
 	        "Double Stone Slab")
-	        
-	        mcl_stairs.register_stair_and_slab("moss", "mcl_core:moss",
-			groups,
-			{"mcl_core_moss_block.png"},
-	        "Moss Stair",
-	        "Moss Slab",
-	        def.sounds, 2, 2,
-	        "Double Moss Slab")
 		
 		minetest.register_node(":"..node.."_"..d[1], {
 			description = def.description.." "..d[1]:gsub("^%l", string.upper),
@@ -568,22 +560,6 @@ for i=1, #nodes do
 			drawtype = "nodebox",
 			sounds = def.sounds,
 			tiles = {"mcl_nether_glowstone.png"},
-			groups = groups,
-			_mcl_blast_resistance = def._mcl_blast_resistance,
-		    _mcl_hardness = def._mcl_hardness,
-			node_box = circularsaw:pixelbox(16, {unpack(d, 3)}),
-			sunlight_propagates = true,
-			on_place = minetest.rotate_node
-		})
-		
-		minetest.register_node(":mcl_core:moss_"..d[1], {
-			description = "Moss "..d[1]:gsub("^%l", string.upper),
-			stack_max = 64,
-			paramtype = "light",
-			paramtype2 = "facedir",
-			drawtype = "nodebox",
-			sounds = def.sounds,
-			tiles = {"mcl_core_moss_block.png"},
 			groups = groups,
 			_mcl_blast_resistance = def._mcl_blast_resistance,
 		    _mcl_hardness = def._mcl_hardness,
