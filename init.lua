@@ -569,14 +569,14 @@ for i=1, #nodes do
 		})
 		
 if minetest.get_modpath("mcl_technic") then
-		minetest.register_node(":mcl_technic:cracked_stone_"..d[1], {
+		minetest.register_node(":mcl_technic:cracked_deepslate_"..d[1], {
 			description = def.description.." "..d[1]:gsub("^%l", string.upper),
 			stack_max = 64,
 			paramtype = "light",
 			paramtype2 = "facedir",
 			drawtype = "nodebox",
 			sounds = def.sounds,
-			tiles = {"mcl_technic_cracked_stone.png"},
+			tiles = {"mcl_technic_cracked_deepslate.png"},
 			groups = groups,
 			_mcl_blast_resistance = def._mcl_blast_resistance,
 		    _mcl_hardness = def._mcl_hardness,
