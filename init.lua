@@ -518,22 +518,6 @@ for i=1, #nodes do
 	        def.sounds, 2, 2,
 	        "Double "..def.description.." Slab")
 		end
-
-            mcl_stairs.register_stair_and_slab("glowstone", "mcl_nether:glowstone",
-			groups,
-			{"mcl_nether_glowstone.png"},
-	        "Glowstone Stair",
-	        "Glowstone Slab",
-	        def.sounds, 2, 2,
-	        "Double Glowstone Slab")
-
-            mcl_stairs.register_stair_and_slab("stone_rough", "mcl_core:stone",
-			groups,
-			{"default_stone.png"},
-	        "Stone Stair",
-	        "Stone Slab",
-	        def.sounds, 2, 2,
-	        "Double Stone Slab")
 		
 		minetest.register_node(":"..node.."_"..d[1], {
 			description = def.description.." "..d[1]:gsub("^%l", string.upper),
@@ -550,8 +534,17 @@ for i=1, #nodes do
 			sunlight_propagates = true,
 			on_place = minetest.rotate_node
 		})
-		
-		minetest.register_node(":mcl_nether:glowstone_"..d[1], {
+
+-- Glowstone
+            mcl_stairs.register_stair_and_slab("glowstone", "mcl_nether:glowstone",
+			groups,
+			{"mcl_nether_glowstone.png"},
+	        "Glowstone Stair",
+	        "Glowstone Slab",
+	        def.sounds, 2, 2,
+	        "Double Glowstone Slab")
+	        
+	        minetest.register_node(":mcl_nether:glowstone_"..d[1], {
 			description = "Glowstone "..d[1]:gsub("^%l", string.upper),
 			stack_max = 64,
 			light_source = minetest.LIGHT_MAX,
@@ -568,6 +561,18 @@ for i=1, #nodes do
 			on_place = minetest.rotate_node
 		})
 		
+-- Stone
+
+            mcl_stairs.register_stair_and_slab("stone_rough", "mcl_core:stone",
+			groups,
+			{"default_stone.png"},
+	        "Stone Stair",
+	        "Stone Slab",
+	        def.sounds, 2, 2,
+	        "Double Stone Slab")
+		
+		
+-- Cracked Deepslate
 if minetest.get_modpath("mcl_technic") then
 		minetest.register_node(":mcl_technic:cracked_deepslate_"..d[1], {
 			description = def.description.." "..d[1]:gsub("^%l", string.upper),

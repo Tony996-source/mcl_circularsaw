@@ -11,3 +11,4 @@ mcl_craftguide?
 mcl_technic?
 mcl_deepslate?
 mcl_copper?
+mcl_bamboo?
