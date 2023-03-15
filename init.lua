@@ -570,8 +570,27 @@ for i=1, #nodes do
 	        "Stone Slab",
 	        def.sounds, 2, 2,
 	        "Double Stone Slab")
-		
-		
+	        
+-- Bamboo
+							   
+            mcl_stairs.register_stair_and_slab("bamboo_stripped", "mcl_bamboo:bamboo_block_stripped",
+			groups,
+			tiles,
+	        "Stripped Bamboo Stair",
+	        "Stripped Bamboo Slab",
+	        def.sounds, 2, 2,
+	        "Double Stripped Bamboo Slab")
+
+-- Quartz
+
+            mcl_stairs.register_stair_and_slab("quartzblock", "group:quartz_block",
+			groups,
+			tiles,
+	        "Quartz Stairs",
+	        "Quartz Slab",
+	        def.sounds, 2, 2,
+	        "Double Quartz Slab")
+
 -- Cracked Deepslate
 if minetest.get_modpath("mcl_technic") then
 		minetest.register_node(":mcl_technic:cracked_deepslate_"..d[1], {
@@ -780,6 +799,8 @@ minetest.override_item("mcl_core:glass_"..shape[1], {
 
 end
 end
+
+--glowstone
 
 
 minetest.override_item("mcl_stairs:slab_glowstone", {

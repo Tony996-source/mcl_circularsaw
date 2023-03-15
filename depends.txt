@@ -12,3 +12,4 @@ mcl_technic?
 mcl_deepslate?
 mcl_copper?
 mcl_bamboo?
+mcl_mud?
